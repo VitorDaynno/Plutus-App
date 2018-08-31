@@ -1,0 +1,15 @@
+{
+  "name": "plutus-app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "react-scripts start",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "author": "Vitor Daynno",
+  "dependencies": {
+    "react": "16.4.2",
+    "react-dom": "16.4.2",
+    "react-scripts": "1.1.5"
+  }
+}
