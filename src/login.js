@@ -3,6 +3,8 @@ import { Card , Row, Col, Form, Input, Icon, Button} from 'antd';
 import './assets/css/login.css';
 import 'antd/dist/antd.css';
 
+import Authentication from './assets/helpers/authentication';
+
 const FormItem = Form.Item;
 
 class Login extends Component {
@@ -11,9 +13,8 @@ class Login extends Component {
         const { form } = this.props;
         const { validateFields } = form;
 
-        console.log('teste')
-        validateFields((err, values) =>{
-            console.log(values)
+        Authentication.login(validateFields, token => {
+            console.log('entrei')
         })
     }
 
@@ -27,7 +28,7 @@ class Login extends Component {
                         <Card title="Plutus" headStyle={{textAlign:"center"}}>
                             <Form onSubmit={ev => this.sendLogin(ev)}>
                                 <FormItem>
-                                    {getFieldDecorator('userName', {
+                                    {getFieldDecorator('email', {
                                         rules: [{ required: true, message: 'Por favor coloque seu email!' }],
                                     })(
                                         <Input placeholder="Seu email" prefix={<Icon type="user"/>}/>
