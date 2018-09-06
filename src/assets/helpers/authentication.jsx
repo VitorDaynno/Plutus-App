@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
+import axios from 'axios';
 
 class Authentication extends Component {
 
@@ -7,10 +8,13 @@ class Authentication extends Component {
             if(!err) {
                 const body = {
                     email: values.email,
-                    passWord: values.passWord
+                    password: values.passWord
                 }
-                console.log(body)
-                cb(body)
+                axios.post(`http://localhost:5000/v1/users/auth`, body)
+                .then(res => {
+                    cb(res.data)
+                })
+                
             }
         });
     }

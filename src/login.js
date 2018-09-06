@@ -14,7 +14,7 @@ class Login extends Component {
         const { validateFields } = form;
 
         Authentication.login(validateFields, token => {
-            console.log('entrei')
+            alert(token.email)
         })
     }
 
@@ -29,7 +29,7 @@ class Login extends Component {
                             {getFieldDecorator('email', {
                                 rules: [{ required: true, message: 'Por favor coloque seu email!' }],
                             })(
-                                <Input placeholder="Seu email" prefix={<Icon type="user"/>}/>
+                                <Input placeholder="Seu email" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
                             )}
                         </FormItem>
                         <FormItem>
