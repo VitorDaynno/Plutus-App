@@ -14,6 +14,9 @@ class Authentication extends Component {
                 .then(res => {
                     cb(res.data)
                 })
+                .catch(error => {
+                    cb(error);
+                })
                 
             }
         });

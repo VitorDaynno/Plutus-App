@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card , Form, Input, Icon, Button} from 'antd';
+import { Card , Form, Input, Icon, Button, message} from 'antd';
 import './assets/css/login.css';
 import 'antd/dist/antd.css';
 
@@ -10,11 +10,16 @@ const FormItem = Form.Item;
 class Login extends Component {
     sendLogin(ev){
         ev.preventDefault();
-        const { form } = this.props;
+        const { history, form } = this.props;
         const { validateFields } = form;
 
-        Authentication.login(validateFields, token => {
-            alert(token.email)
+        Authentication.login(validateFields, response => {                    
+            if(response.token){
+                history.push('/transactions');
+            }
+            else {
+                message.error('Erro ao efetuar login');
+            }
         })
     }
 
