@@ -1,47 +1,75 @@
 import React, { Component } from 'react';
-import 'antd/dist/antd.css';
-import { Table } from 'antd';
-import './../assets/css/transactions.css';
+import { Table, Tag, Row, Col } from 'antd';
+import axios from 'axios';
+import '../assets/css/transactions.css';
+
+const { Column } = Table;
 
 class Transactions extends Component {
 
-    render() {
+  getTransactions() {
+      var token = localStorage.getItem('token');
 
-        const dataSource = [{
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street'
-          }, {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street'
-          }];
-          
-          const columns = [{
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-          }, {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-          }, {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-          }];
+      return axios.get(`http://localhost:5000/v1/transactions`,{ headers: { Authorization: "Bearer " + token } } )
+        .then(res => {
+          console.log(res.data)
+          return res.data;
+        })
+        .catch(error => {
+          console.log(error);
+        })              
+    };
+
+    render() {
+      var data = null;
+      this.getTransactions();    
 
         return (
-            <div>  
-                <div className="head">Head</div>
-                <div className="menu">Menu</div>
-                <div className="body">
-                    <Table dataSource={dataSource} columns={columns} />
-                </div>
+            <div> 
+                <Row >
+                    <Col className="col" span="24">
+                        <Table className="table" dataSource={data}>                    
+                            <Column
+                                title="Nome"
+                                dataIndex="description"
+                                key="description"
+                            />     
+                            <Column
+                                title="Dia"
+                                dataIndex="day"
+                                key="day"
+                            />
+                            <Column
+                                title="Horário"
+                                dataIndex="hours"
+                                key="hours"
+                            />                                           
+                            <Column
+                                title="Categorias"
+                                dataIndex="tags"
+                                key="tags"
+                                render={tags => (
+                                    <span>
+                                    {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)}
+                                    </span>
+                                )}
+                            />                            
+                            <Column
+                                title="Forma de pagamento"
+                                dataIndex="paymentForm"
+                                key="paymentForm"
+                            />
+                            <Column
+                                title="Valor"
+                                dataIndex="value"
+                                key="value"
+                            />                                  
+                        </Table>
+                    </Col>                
+                </Row>        
             </div>
-        ) 
+        )
+        
     }
 }
 

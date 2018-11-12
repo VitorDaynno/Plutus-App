@@ -15,6 +15,7 @@ class Login extends Component {
 
         Authentication.login(validateFields, response => {                    
             if(response.token){
+                localStorage.setItem('token', response.token);
                 history.push('/transactions');
             }
             else {

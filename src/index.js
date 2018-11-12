@@ -21,5 +21,6 @@ ReactDOM.render(
                 <Route exact path='/transactions' component={Transactions} />
             </Switch>
         </Router>), document.getElementById('app'));
+        
 registerServiceWorker()
  
