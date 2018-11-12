@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Header from './components/Header';
 
 import {
     BrowserRouter as Router,
@@ -17,8 +18,11 @@ ReactDOM.render(
         <Router>
             <Switch>
                 <Route exact path='/' component={Login} />
-                <Route exact path='/home' component={Home} />
-                <Route exact path='/transactions' component={Transactions} />
+                <div>
+                    <Header />
+                    <Route exact path='/home' component={Home} />
+                    <Route exact path='/transactions' component={Transactions} />
+                </div>
             </Switch>
         </Router>), document.getElementById('app'));
         
