@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Tabs, Row, Col } from 'antd';
+import { Table, Tabs, Tag, Row, Col } from 'antd';
 import axios from 'axios';
 import '../assets/css/transactions.css';
 
@@ -16,7 +16,6 @@ class Transactions extends Component {
 
       axios.get(`http://localhost:5000/v1/transactions`,{ headers: { Authorization: "Bearer " + token } } )
         .then(res => {
-          console.log(res.data)
           this.setState({data: res.data})
           return res.data;
         })
@@ -25,6 +24,18 @@ class Transactions extends Component {
         })              
     };
 
+    formatDate(dateString){
+        const date = new Date(dateString);
+
+        return date.toLocaleDateString();
+    }
+
+    formatTime(dateString) {
+        var time = new Date(dateString);
+
+        return time.toLocaleTimeString();
+    }
+
     render() {
       
       this.getTransactions();    
@@ -32,7 +43,7 @@ class Transactions extends Component {
         return (
             <div> 
                 <Tabs defaultActiveKey="1">
-                    <TabPane tab="Tab 1" key="1">
+                    <TabPane tab="Geral" key="1">
                         <Row >
                             <Col className="col" span="20">
                                 <Table className="table" dataSource={data}>                    
@@ -43,40 +54,55 @@ class Transactions extends Component {
                                     />     
                                     <Column
                                         title="Dia"
-                                        dataIndex="day"
+                                        dataIndex="purchaseDate"
                                         key="day"
+                                        render={purchaseDate => (
+                                            <span>
+                                                {this.formatDate(purchaseDate)}
+                                            </span>
+                                        )}                                        
                                     />
                                     <Column
                                         title="Horário"
-                                        dataIndex="hours"
+                                        dataIndex="purchaseDate"
                                         key="hours"
-                                    />                                           
-                                    {/* <Column
-                                        title="Categorias"
-                                        dataIndex="tags"
-                                        key="tags"
-                                        render={tags => (
+                                        render={purchaseDate => (
                                             <span>
-                                            {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)}
+                                                {this.formatTime(purchaseDate)}
+                                            </span>
+                                        )}   
+                                    />                                           
+                                     <Column
+                                        title="Categorias"
+                                        dataIndex="category"
+                                        key="tags"
+                                        render={category => (
+                                            <span>
+                                            <Tag color="orange" key={category}>{category}</Tag>
+                                            <Tag color="green" key={category}>{category}</Tag>
                                             </span>
                                         )}
-                                    />                             */}
+                                    />                             
                                     <Column
                                         title="Forma de pagamento"
-                                        dataIndex="paymentForm"
-                                        key="paymentForm"
+                                        dataIndex="formPayment"
+                                        key="formPayment"
                                     />
                                     <Column
                                         title="Valor"
                                         dataIndex="value"
                                         key="value"
+                                        render={value =>(
+                                            <span>
+                                                {value.toLocaleString('pt-BR', { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}
+                                            </span>)
+                                        }
                                     />                                  
                                 </Table>
                             </Col>                
                         </Row>        
                     </TabPane>
-                    <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
-                    
+                    <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>                    
                 </Tabs>
                
             </div>
