@@ -11,17 +11,26 @@ class Transactions extends Component {
         data: null
     }
     
-  getTransactions() {
-      var token = localStorage.getItem('token');
+    componentDidMount() {
+        this.getTransactions();  
+    }
 
-      axios.get(`http://localhost:5000/v1/transactions`,{ headers: { Authorization: "Bearer " + token } } )
-        .then(res => {
-          this.setState({data: res.data})
-          return res.data;
-        })
-        .catch(error => {
-          console.log(error);
-        })              
+    getTransactions() {
+        var token = localStorage.getItem('token');
+        const { history} = this.props;
+
+        axios.get(`http://localhost:5000/v1/transactions`,{ headers: { Authorization: "Bearer " + token } } )
+            .then(res => {
+                this.setState({data: res.data})               
+            })
+            .catch(error => {
+                console.log(error);
+
+                if(error.response && error.response.status && error.response.status === 403) {
+                    history.push('/');
+                }               
+               
+            })              
     };
 
     formatDate(dateString){
@@ -36,16 +45,15 @@ class Transactions extends Component {
         return time.toLocaleTimeString();
     }
 
-    render() {
-      
-      this.getTransactions();    
+    render() {      
+        
         const { data } = this.state;
         return (
             <div> 
-                <Tabs defaultActiveKey="1">
-                    <TabPane tab="Geral" key="1">
-                        <Row >
-                            <Col className="col" span="20">
+                <Row >
+                    <Col span="23" className="col">
+                        <Tabs defaultActiveKey="1">
+                            <TabPane tab="Geral" key="1">
                                 <Table className="table" dataSource={data}>                    
                                     <Column
                                         title="Nome"
@@ -78,14 +86,13 @@ class Transactions extends Component {
                                         key="tags"
                                         render={category => (
                                             <span>
-                                            <Tag color="orange" key={category}>{category}</Tag>
-                                            <Tag color="green" key={category}>{category}</Tag>
+                                            <Tag color="orange" key={category}>{category}</Tag>                                            
                                             </span>
                                         )}
                                     />                             
                                     <Column
                                         title="Forma de pagamento"
-                                        dataIndex="formPayment"
+                                        dataIndex="formPayment.name"
                                         key="formPayment"
                                     />
                                     <Column
@@ -98,13 +105,11 @@ class Transactions extends Component {
                                             </span>)
                                         }
                                     />                                  
-                                </Table>
-                            </Col>                
-                        </Row>        
-                    </TabPane>
-                    <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>                    
-                </Tabs>
-               
+                                </Table>                                
+                            </TabPane>                                        
+                        </Tabs>
+                    </Col>                
+                </Row>   
             </div>
         )
         
