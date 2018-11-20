@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Menu, Button, Icon } from 'antd';
+import { Menu, Icon } from 'antd';
 
 class MainMenu extends Component {
     
