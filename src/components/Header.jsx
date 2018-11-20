@@ -1,8 +1,9 @@
 import React from 'react';
+import { Badge } from 'antd';
 
 const Header = () =>
-    <div>
-        My Header Component
+    <div >
+
     </div>
 ;
 

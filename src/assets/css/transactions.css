@@ -1,10 +1,8 @@
 .col {
     background-color:rgba(255, 255, 255, 1);
+    margin-left: 5px;
 }
 .table {
     margin: 10px;
 }
 
-body {
-    background: rgba(73, 77, 84)
-}

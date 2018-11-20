@@ -51,7 +51,7 @@ class Transactions extends Component {
         return (
             <div> 
                 <Row >
-                    <Col span="23" className="col">
+                    <Col className="col">
                         <Tabs defaultActiveKey="1">
                             <TabPane tab="Geral" key="1">
                                 <Table className="table" dataSource={data}>                    
