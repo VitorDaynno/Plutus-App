@@ -1,7 +1,7 @@
 {
   "name": "plutus-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "A frontend of a dashboard Plutus",
   "scripts": {
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom"

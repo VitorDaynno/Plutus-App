@@ -1,19 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Cab from './components/topHeader';
-import Menu from './components/mainMenu';
-
 import {
     BrowserRouter as Router,
     Route,
     Switch
 } from 'react-router-dom';
+import { Layout, } from 'antd';
 
+import TopHeader from './components/topHeader';
+import Menu from './components/mainMenu';
 import Login from './login';
 import Home from './components/home'
 import registerServiceWorker from './registerServiceWorker';
 import Transactions from './components/transactions';
-import { Layout, } from 'antd';
+
+import './assets/css/index.css';
 
 const { Header, Sider, Content } = Layout;
 
@@ -24,13 +25,13 @@ ReactDOM.render(
                 <Route exact path='/' component={Login} />
                 <div className="container-plutus">
                     <Header>
-                        <Cab />
+                        <TopHeader />
                     </Header>
-                    <Layout>
-                        <Sider>
-                            <Menu />
+                    <Layout className="sider">
+                        <Sider >
+                            <Menu/>
                         </Sider>
-                        <Content>
+                        <Content className="content">
                             <Route exact path='/home' component={Home} />
                             <Route exact path='/transactions' component={Transactions} />
                         </Content>
