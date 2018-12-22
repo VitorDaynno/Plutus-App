@@ -86,7 +86,7 @@ class Transactions extends Component {
                                         key="tags"
                                         render={category => (
                                             <span>
-                                            <Tag color="orange" key={category}>{category}</Tag>                                            
+                                                {category.map(categor => <Tag color="orange" key={categor}>{categor}</Tag>)}                                         
                                             </span>
                                         )}
                                     />                             
