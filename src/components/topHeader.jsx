@@ -1,8 +1,53 @@
 import React, { Component } from 'react';
-import { Button, Icon } from 'antd';
+import { Tag } from 'antd';
+import axios from 'axios';
 import '../assets/css/topHeader.css';
 
+
+import Format from '../assets/helpers/format';
+
 class TopHeader extends Component {
+
+    state = {
+        balances: []
+    }
+    
+    componentDidMount() {
+        this.getBalances();  
+    }
+
+    mountBalances() {
+
+        const { balances } = this.state;
+        return balances.map(balance => {
+            if (balance.balance < 0){
+                return <Tag color='red' key={balance.id}>{balance.name}: {Format.money(balance.balance)}</Tag>
+            }
+            else if (balance.balance <= 100) {
+                return <Tag color='orange' key={balance.id}>{balance.name}: {Format.money(balance.balance)}</Tag>
+            } else {
+                return <Tag color='green' key={balance.id}>{balance.name}: {Format.money(balance.balance)}</Tag>
+            }
+        })        
+    }
+
+    getBalances() {
+        var token = localStorage.getItem('token');
+        const { history} = this.props;
+
+        axios.get(`http://localhost:5000/v1/formspayment/balances`,{ headers: { Authorization: "Bearer " + token } } )
+            .then(res => {
+                this.setState({balances: res.data})               
+            })
+            .catch(error => {
+                console.error(error);
+
+                if(error.response && error.response.status && error.response.status === 403) {
+                    history.push('/');
+                }               
+               
+            })              
+    };
 
     render() {      
         
@@ -11,9 +56,9 @@ class TopHeader extends Component {
                 <div>
                     <h2 id="logo">Plutus</h2>
                 </div>
-                <Button>
-                    <Icon type="bell"></Icon>
-                </Button>
+                <div>
+                    {this.mountBalances()}
+                </div>                
             </div>)
     }
 }

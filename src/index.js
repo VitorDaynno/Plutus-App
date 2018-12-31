@@ -24,14 +24,14 @@ ReactDOM.render(
             <Switch>
                 <Route exact path='/' component={Login} />
                 <div className="container-plutus">
-                    <Header>
+                    <Header className="header">
                         <TopHeader />
                     </Header>
-                    <Layout className="sider">
-                        <Sider >
+                    <Layout>
+                        <Sider>
                             <Menu/>
                         </Sider>
-                        <Content className="content">
+                        <Content>
                             <Route exact path='/home' component={Home} />
                             <Route exact path='/transactions' component={Transactions} />
                         </Content>
