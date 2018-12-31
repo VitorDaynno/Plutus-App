@@ -21,7 +21,7 @@ class TopHeader extends Component {
         const { balances } = this.state;
         return balances.map(balance => {
             if (balance.balance < 0){
-                return <Tag color='red' key={balance.id}>{balance.name}: {Format.money(balance.balance)}</Tag>
+                return <Tag color='red' key={balance.id}><span className="balances">{balance.name}:</span> {Format.money(balance.balance)}</Tag>
             }
             else if (balance.balance <= 100) {
                 return <Tag color='orange' key={balance.id}>{balance.name}: {Format.money(balance.balance)}</Tag>
