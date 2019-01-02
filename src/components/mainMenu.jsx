@@ -9,15 +9,15 @@ class MainMenu extends Component {
         return (
             <div>
                 <Menu 
-                    defaultSelectedKeys={['home']}
+                    defaultSelectedKeys={['transactions']}
                     mode="inline"
                     theme="dark">                    
-                    <Menu.Item key="home"  >
+                    {/* <Menu.Item key="home"  >
                         <NavLink to="/home">
                             <Icon type="home"/>
                             <span>Home</span>
                         </NavLink>                        
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <Menu.Item key="transactions">
                         <NavLink to="/transactions">
                             <Icon type="table" />

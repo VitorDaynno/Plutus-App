@@ -31,7 +31,7 @@ ReactDOM.render(
                         <Sider>
                             <Menu/>
                         </Sider>
-                        <Content>
+                        <Content className="content">
                             <Route exact path='/home' component={Home} />
                             <Route exact path='/transactions' component={Transactions} />
                         </Content>
