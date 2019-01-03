@@ -10,7 +10,7 @@ class Authentication extends Component {
                     email: values.email,
                     password: values.passWord
                 }
-                axios.post(`http://localhost:5000/v1/users/auth`, body)
+                axios.post(`/v1/users/auth`, body)
                 .then(res => {
                     cb(res.data)
                 })
