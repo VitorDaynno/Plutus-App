@@ -35,7 +35,7 @@ class TopHeader extends Component {
         var token = localStorage.getItem('token');
         const { history} = this.props;
 
-        axios.get(`http://localhost:5000/v1/formspayment/balances`,{ headers: { Authorization: "Bearer " + token } } )
+        axios.get(`/v1/formspayment/balances`,{ headers: { Authorization: "Bearer " + token } } )
             .then(res => {
                 this.setState({balances: res.data})               
             })
