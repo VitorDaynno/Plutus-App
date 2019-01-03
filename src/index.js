@@ -32,7 +32,6 @@ ReactDOM.render(
                             <Menu/>
                         </Sider>
                         <Content className="content">
-                            <Route exact path='/home' component={Home} />
                             <Route exact path='/transactions' component={Transactions} />
                         </Content>
                     </Layout>
