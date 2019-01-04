@@ -10,9 +10,9 @@ import { Layout, } from 'antd';
 import TopHeader from './components/topHeader';
 import Menu from './components/mainMenu';
 import Login from './login';
-import Home from './components/home'
 import registerServiceWorker from './registerServiceWorker';
 import Transactions from './components/transactions';
+import FormsPayments from './components/formsPayment';
 
 import './assets/css/index.css';
 
@@ -33,6 +33,7 @@ ReactDOM.render(
                         </Sider>
                         <Content className="content">
                             <Route exact path='/transactions' component={Transactions} />
+                            <Route exact path='/formspayments' component={FormsPayments} />
                         </Content>
                     </Layout>
                 </div>

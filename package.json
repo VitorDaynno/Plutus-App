@@ -17,6 +17,7 @@
     "react-router-dom": "4.3.1",
     "react-scripts": "^2.1.2"
   },
+  "proxy": "http://localhost:5000",
   "browserslist": [
     ">0.2%",
     "not dead",

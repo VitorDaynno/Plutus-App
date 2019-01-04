@@ -1,0 +1,15 @@
+.col {
+    background-color:rgba(255, 255, 255, 1);
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.table {
+    margin: 10px;
+}
+
+.test {
+    margin-top: 5px;
+    margin-right: 5px;
+    display: flex;
+    justify-content: flex-end;
+}
