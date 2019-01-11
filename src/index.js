@@ -12,7 +12,7 @@ import Menu from './components/mainMenu';
 import Login from './login';
 import registerServiceWorker from './registerServiceWorker';
 import Transactions from './components/transactions';
-import FormsPayments from './components/formsPayment';
+import Accounts from './components/account';
 
 import './assets/css/index.css';
 
@@ -33,7 +33,7 @@ ReactDOM.render(
                         </Sider>
                         <Content className="content">
                             <Route exact path='/transactions' component={Transactions} />
-                            <Route exact path='/formspayments' component={FormsPayments} />
+                            <Route exact path='/accounts' component={Accounts} />
                         </Content>
                     </Layout>
                 </div>
