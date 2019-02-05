@@ -11,19 +11,19 @@ class MainMenu extends Component {
                 <Menu 
                     defaultSelectedKeys={['transactions']}
                     mode="inline"
-                    theme="dark">                    
-                    {/* <Menu.Item key="home"  >
-                        <NavLink to="/home">
-                            <Icon type="home"/>
-                            <span>Home</span>
-                        </NavLink>                        
-                    </Menu.Item> */}
+                    theme="dark">                
                     <Menu.Item key="transactions">
                         <NavLink to="/transactions">
                             <Icon type="table" />
                             <span>Transações</span>
                         </NavLink>                        
-                    </Menu.Item>          
+                    </Menu.Item>
+                    <Menu.Item key="accounts">
+                        <NavLink to="/accounts">
+                            <Icon type="wallet" />
+                            <span>Contas</span>
+                        </NavLink>                        
+                    </Menu.Item>         
                 </Menu>                  
             </div>
         ) 
