@@ -1,5 +1,5 @@
 import React, { PureComponent} from 'react';
-import { Modal, Input, Select, notification, message, Row, Col } from 'antd';
+import { Modal, Input, Select, message, Row, Col } from 'antd';
 import '../assets/css/newAccount.css';
 
 const { Option } = Select;
