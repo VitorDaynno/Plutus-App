@@ -25,7 +25,7 @@ class FormsPayment extends Component {
 	}
 
 	clickOk = (ev) => {
-		var token = localStorage.getItem('token');
+		const token = localStorage.getItem('token');
         const { history} = this.props;
 		let body = {};
 
@@ -45,6 +45,7 @@ class FormsPayment extends Component {
 					message: 'Sucesso',
 					description: 'Sua conta foi criada com sucesso',
 				  })
+				this.getFormsPayment();
 				this.setState({
 					visible: false,
 				  });
@@ -84,6 +85,7 @@ class FormsPayment extends Component {
 			})
 	};
 
+
 	render() {
 
 		const { data } = this.state;
@@ -106,7 +108,7 @@ class FormsPayment extends Component {
 							key="name"
 						/>
 						<Column
-							title="Tipo"
+							title="Categoria"
 							dataIndex="type"
 							key="type"
 						/>
@@ -118,8 +120,7 @@ class FormsPayment extends Component {
 				clickOk={this.clickOk}
 				clickCancel={this.clickCancel}			
 			/>
-			
-            </div >
+        </div >
         )
 
 	}
