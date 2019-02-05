@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Table, Tabs, Tag, Row, Col } from 'antd';
+import { Table, Tabs, Tag, Row, Col, Button } from 'antd';
 import axios from 'axios';
 import '../assets/css/transactions.css';
+import NewTransaction from './newTransactions';
 
 const TabPane = Tabs.TabPane;
 const { Column } = Table;
 
 class Transactions extends Component {
     state = {
-        data: null
+        data: null,
+        visible: true        
     }
     
     componentDidMount() {
@@ -45,11 +47,22 @@ class Transactions extends Component {
         return time.toLocaleTimeString();
     }
 
+    showDrawer = () => {
+        this.setState({visible: true}) 
+    }
+
     render() {      
         
         const { data } = this.state;
         return (
             <div> 
+                <Row>
+					<Col className="new">
+						<Button onClick={this.showDrawer}>
+						Nova
+                        </Button>
+                    </Col>
+                </Row>
                 <Row >
                     <Col className="col">
                         <Tabs defaultActiveKey="1">
@@ -109,10 +122,12 @@ class Transactions extends Component {
                             </TabPane>                                        
                         </Tabs>
                     </Col>                
-                </Row>   
+                </Row>
+                <NewTransaction
+				visible={this.state.visible}			
+			/>
             </div>
         )
-        
     }
 }
 
