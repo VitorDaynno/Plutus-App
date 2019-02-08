@@ -1,9 +1,11 @@
 import React, { PureComponent} from 'react';
 import axios from 'axios';
 
-import {  Drawer, Input, Row, Col, DatePicker, TimePicker, InputNumber, Tag, Tooltip, Icon, Select, Button } from 'antd';
+import {  Drawer, Input, Row, Col, DatePicker, TimePicker, InputNumber, Tag, Tooltip, Icon, Select, Button, message } from 'antd';
 
 const Option = Select.Option;
+
+
 
 class NewTransaction extends PureComponent { 
 
@@ -68,12 +70,14 @@ class NewTransaction extends PureComponent {
     }
 
     changeDate = (e) => {
-        const date = e.format();
+        let date = e
+        date = date ? date.format().split('T')[0] : date;
         this.setState({date});
     }
 
     changeTime = (e) => {
-        const time = e.format();
+        let time = e;
+        time = time ? time.format('LTS') : time;
         this.setState({time});
     }
 
@@ -90,17 +94,36 @@ class NewTransaction extends PureComponent {
     saveTransactions = () => {
         const { state } = this;
 
-        let transaction = {};
+        this.validate();
 
-        if(state.name){
-            transaction.name = state.name;
-        }
+        let transaction = {};       
 
         transaction.date = state.date;
         transaction.value = state.value;
         transaction.account = state.account;        
         transaction.categories = state.categories;
         
+        console.log(transaction)
+    }
+
+    validate = () => {
+        const { state } = this;
+
+        if(!state.name){
+            message.error('O campo Nome não pode ser vazio');
+        }       
+        if(!state.date){
+            message.error('O campo Data não pode ser vazio');
+        }        
+        if(!state.time){
+            message.error('O campo Horário não pode ser vazio');
+        }
+        if(!state.value){
+            message.error('O campo Valor não pode ser vazio');
+        }
+        if(!state.account){
+            message.error('O campo Conta não pode ser vazio');
+        }
     }
    
     render (){
