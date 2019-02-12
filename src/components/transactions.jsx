@@ -10,7 +10,7 @@ const { Column } = Table;
 class Transactions extends Component {
     state = {
         data: null,
-        visible: true        
+        visible: false        
     }
     
     componentDidMount() {
@@ -95,18 +95,18 @@ class Transactions extends Component {
                                     />                                           
                                      <Column
                                         title="Categorias"
-                                        dataIndex="category"
+                                        dataIndex="categories"
                                         key="tags"
-                                        render={category => (
+                                        render={categories => (
                                             <span>
-                                                {category.map(categor => <Tag color="orange" key={categor}>{categor}</Tag>)}                                         
+                                                {categories.map(category => <Tag color="orange" key={category}>{category}</Tag>)}                                         
                                             </span>
                                         )}
                                     />                             
                                     <Column
-                                        title="Forma de pagamento"
-                                        dataIndex="formPayment.name"
-                                        key="formPayment"
+                                        title="Conta"
+                                        dataIndex="account.name"
+                                        key="account"
                                     />
                                     <Column
                                         title="Valor"

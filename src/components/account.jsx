@@ -15,7 +15,7 @@ class FormsPayment extends Component {
 	}
 
 	componentDidMount() {
-		this.getFormsPayment();
+		this.getAccounts();
 	}
 
 	showModal = () => {
@@ -39,13 +39,13 @@ class FormsPayment extends Component {
 		}
 		body.type = ev.category;
 
-        axios.post(`/v1/formspayment`, body ,{ headers: { Authorization: "Bearer " + token } } )
+        axios.post(`/v1/accounts`, body ,{ headers: { Authorization: "Bearer " + token } } )
             .then(res => {
 				notification['success']({
 					message: 'Sucesso',
 					description: 'Sua conta foi criada com sucesso',
 				  })
-				this.getFormsPayment();
+				this.getAccounts();
 				this.setState({
 					visible: false,
 				  });
@@ -67,11 +67,11 @@ class FormsPayment extends Component {
         });
     }
 
-	getFormsPayment() {
+	getAccounts() {
 		var token = localStorage.getItem('token');
 		const { history } = this.props;
 
-		axios.get(`/v1/formspayment`, { headers: { Authorization: "Bearer " + token } })
+		axios.get(`/v1/accounts`, { headers: { Authorization: "Bearer " + token } })
 			.then(res => {
 				this.setState({ data: res.data })
 			})

@@ -5,8 +5,6 @@ import {  Drawer, Input, Row, Col, DatePicker, TimePicker, InputNumber, Tag, Too
 
 const Option = Select.Option;
 
-
-
 class NewTransaction extends PureComponent { 
 
     constructor(props) {
@@ -98,12 +96,31 @@ class NewTransaction extends PureComponent {
 
         let transaction = {};       
 
-        transaction.date = state.date;
+        transaction.description = state.name;
+        transaction.purchaseDate = state.date + ' ' + state.time;
         transaction.value = state.value;
-        transaction.account = state.account;        
-        transaction.categories = state.categories;
+        transaction.formPayment = state.account;        
+        transaction.category = state.categories;
         
-        console.log(transaction)
+        console.log(transaction);
+
+        var token = localStorage.getItem('token');
+        const { history} = this.props;
+
+        console.log(token)
+
+        axios.post(`/v1/transactions`, transaction,{ headers: { Authorization: "Bearer " + token } } )
+            .then(res => {
+                console.log(res)             
+            })
+            .catch(error => {
+                console.log(error);
+
+                if(error.response && error.response.status && error.response.status === 403) {
+                    history.push('/');
+                }               
+               
+            }) 
     }
 
     validate = () => {
@@ -150,7 +167,7 @@ class NewTransaction extends PureComponent {
                     <Row>
                         <Col span={12}>
                             <label className="label">Data:</label><br/>
-                            <DatePicker onChange={this.changeDate}/>
+                            <DatePicker format="DD/MM/YYYY" onChange={this.changeDate}/>
                         </Col>
                         <Col span={12}>
                             <label className="label">Horário:</label><br/>    
@@ -160,7 +177,7 @@ class NewTransaction extends PureComponent {
                     <Row>
                         <Col span={12}>
                             <label className="label">Valor:</label><br/>
-                            <InputNumber onChange={this.changeValue}/>
+                            <InputNumber precision="2" onChange={this.changeValue}/>
                         </Col>
                         <Col>
                             <label className="label">Conta:</label><br/>

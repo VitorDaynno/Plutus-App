@@ -54,9 +54,7 @@ class NewAccount extends PureComponent {
                             <Option value="saving">Poupança</Option>
                         </Select>
                     </Col>
-                </Row>
-
-                
+                </Row>                
             </Modal>
         </div>)
     }
