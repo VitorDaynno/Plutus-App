@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import {  Drawer, Input, Row, Col, DatePicker, TimePicker, InputNumber, Tag, Tooltip, Icon, Select, Button, message } from 'antd';
 
+import '../assets/css/newTransactions.css';
 const Option = Select.Option;
 
 class NewTransaction extends PureComponent { 
@@ -20,7 +21,7 @@ class NewTransaction extends PureComponent {
         var token = localStorage.getItem('token');
         const { history} = this.props;
 
-        axios.get(`/v1/formspayment`,{ headers: { Authorization: "Bearer " + token } } )
+        axios.get(`/v1/accounts`,{ headers: { Authorization: "Bearer " + token } } )
             .then(res => {
                 this.setState({accounts: res.data})               
             })
@@ -99,8 +100,8 @@ class NewTransaction extends PureComponent {
         transaction.description = state.name;
         transaction.purchaseDate = state.date + ' ' + state.time;
         transaction.value = state.value;
-        transaction.formPayment = state.account;        
-        transaction.category = state.categories;
+        transaction.account = state.account;        
+        transaction.categories = state.categories;
         
         console.log(transaction);
 
@@ -111,7 +112,7 @@ class NewTransaction extends PureComponent {
 
         axios.post(`/v1/transactions`, transaction,{ headers: { Authorization: "Bearer " + token } } )
             .then(res => {
-                console.log(res)             
+                this.props.onClose();          
             })
             .catch(error => {
                 console.log(error);
@@ -158,13 +159,13 @@ class NewTransaction extends PureComponent {
                 onClose={onClose}
                 visible={visible}
                 >
-                    <Row>
+                    <Row className="new-transaction-row">
                         <Col>
                             <label className="label">Nome:</label>    
                             <Input onChange={this.changeName}/>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className="new-transaction-row">
                         <Col span={12}>
                             <label className="label">Data:</label><br/>
                             <DatePicker format="DD/MM/YYYY" onChange={this.changeDate}/>
@@ -174,12 +175,12 @@ class NewTransaction extends PureComponent {
                             <TimePicker onChange={this.changeTime}/>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className="new-transaction-row">
                         <Col span={12}>
                             <label className="label">Valor:</label><br/>
-                            <InputNumber precision="2" onChange={this.changeValue}/>
+                            <InputNumber precision="2" onChange={this.changeValue} style={{ width: 120 }}/>
                         </Col>
-                        <Col>
+                        <Col span={12}>
                             <label className="label">Conta:</label><br/>
                             <Select onChange={this.changeAccount} style={{ width: 120 }}>
                                 {accounts.map((account)=>{
@@ -188,7 +189,7 @@ class NewTransaction extends PureComponent {
                             </Select>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className="new-transaction-row">
                         <Col>
                             <label className="label">Categorias:</label><br/>
                             {categories.map((category) => {
@@ -225,7 +226,7 @@ class NewTransaction extends PureComponent {
                     <Row>
                         <Col className="new">
                             <Button onClick={this.saveTransactions}>
-                            Nova
+                            Salvar
                             </Button>
                         </Col>
                     </Row>                   

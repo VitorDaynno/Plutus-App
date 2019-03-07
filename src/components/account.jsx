@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Table, Row, Col, Button, message, notification } from 'antd';
 import axios from 'axios';
-import '../assets/css/formsPayments.css';
+import '../assets/css/accounts.css';
 
-import NewFormsPayment from './newAccount';
+import NewAccount from './newAccount';
 
 const { Column } = Table;
 
-class FormsPayment extends Component {
+class Account extends Component {
 
 	state = {
 		data: null,
@@ -115,7 +115,7 @@ class FormsPayment extends Component {
 					</Table>
 				</Col>
 			</Row>
-			<NewFormsPayment 
+			<NewAccount
 				visible={this.state.visible}
 				clickOk={this.clickOk}
 				clickCancel={this.clickCancel}			
@@ -126,4 +126,4 @@ class FormsPayment extends Component {
 	}
 }
 
-export default FormsPayment;
+export default Account;

@@ -51,6 +51,13 @@ class Transactions extends Component {
         this.setState({visible: true}) 
     }
 
+    onClose = () => {
+        this.setState({
+          visible: false,
+        });
+        this.getTransactions();
+    };
+
     render() {      
         
         const { data } = this.state;
@@ -124,7 +131,8 @@ class Transactions extends Component {
                     </Col>                
                 </Row>
                 <NewTransaction
-				visible={this.state.visible}			
+                onClose={this.onClose}
+				visible={this.state.visible}		
 			/>
             </div>
         )
