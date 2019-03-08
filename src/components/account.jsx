@@ -99,28 +99,28 @@ class Account extends Component {
                         </Button>
                     </Col>
                 </Row>
-			<Row >
-				<Col className="col">
-					<Table className="table" dataSource={data}>
-						<Column
-							title="Nome"
-							dataIndex="name"
-							key="name"
-						/>
-						<Column
-							title="Categoria"
-							dataIndex="type"
-							key="type"
-						/>
-					</Table>
-				</Col>
-			</Row>
-			<NewAccount
-				visible={this.state.visible}
-				clickOk={this.clickOk}
-				clickCancel={this.clickCancel}			
-			/>
-        </div >
+				<Row>
+					<Col className="col">
+						<Table className="table" dataSource={data}>
+							<Column
+								title="Nome"
+								dataIndex="name"
+								key="name"
+							/>
+							<Column
+								title="Categoria"
+								dataIndex="type"
+								key="type"
+							/>
+						</Table>
+					</Col>
+				</Row>
+				<NewAccount
+					visible={this.state.visible}
+					clickOk={this.clickOk}
+					clickCancel={this.clickCancel}			
+				/>
+        	</div >
         )
 
 	}

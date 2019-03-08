@@ -64,13 +64,13 @@ class Transactions extends Component {
         return (
             <div> 
                 <Row>
-					<Col className="new">
+					<Col className="transaction-row">
 						<Button onClick={this.showDrawer}>
 						Nova
                         </Button>
                     </Col>
                 </Row>
-                <Row >
+                <Row>
                     <Col className="col">
                         <Tabs defaultActiveKey="1">
                             <TabPane tab="Geral" key="1">
