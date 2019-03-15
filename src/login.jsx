@@ -8,7 +8,7 @@ import Authentication from './assets/helpers/authentication';
 const FormItem = Form.Item;
 
 class Login extends Component {
-    sendLogin(ev){
+    sendLogin(ev) {
         ev.preventDefault();
         const { history, form } = this.props;
         const { validateFields } = form;

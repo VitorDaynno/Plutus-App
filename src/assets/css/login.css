@@ -8,9 +8,9 @@ body {
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 40%;
     width: 80%;
     max-width: 500px;
+    max-height: 45%;
 }
 
 @media (max-width: 768px) {
