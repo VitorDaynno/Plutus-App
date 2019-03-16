@@ -106,6 +106,11 @@ class NewTransaction extends PureComponent {
         this.setState({account});
     }
 
+    changeInstallments = (e) => {
+        const installments = e;
+        this.setState({installments});
+    }
+
     saveTransactions = () => {
         const { state } = this;
 
@@ -118,6 +123,11 @@ class NewTransaction extends PureComponent {
         transaction.value = state.value;
         transaction.account = state.account;        
         transaction.categories = state.categories;
+        
+        if(state.installments) {
+            transaction.installments = state.installments
+        }
+        
 
         var token = localStorage.getItem('token');
         const { history} = this.props;
@@ -188,17 +198,21 @@ class NewTransaction extends PureComponent {
                                 </Col>
                             </Row>
                             <Row className="new-transaction-row">
-                                <Col span={12}>
+                                <Col span={8}>
                                     <label className="label">Valor:</label><br/>
                                     <InputNumber precision="2" onChange={this.changeValue} style={{ width: 120 }}/>
                                 </Col>
-                                <Col span={12}>
+                                <Col span={8}>
                                     <label className="label">Conta:</label><br/>
                                     <Select onChange={this.changeAccount} style={{ width: 120 }}>
                                         {accounts.map((account)=>{
                                             return <Option value={account.id}>{account.name}</Option>
                                         })}                               
                                     </Select>
+                                </Col>
+                                <Col span={8}>
+                                    <label className="label">N° de parcelas:</label><br/>
+                                    <InputNumber precision="0"  onChange={this.changeInstallments} style={{ width: 120 }}/>                          
                                 </Col>
                             </Row>
                             <Row className="new-transaction-row">
