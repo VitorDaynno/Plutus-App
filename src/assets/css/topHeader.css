@@ -1,6 +1,6 @@
 .topHeader {
-    display: flex;
-    align-items: center;
+    display: flex; 
+    align-items: center; 
     justify-content: space-between;
 }
 
@@ -9,7 +9,7 @@
     font-weight: bold;
 }
 
-.balances {
+.balance {
     font-weight: bold;
     font-size: 1.1em
 }

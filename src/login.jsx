@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Card , Form, Input, Icon, Button, message} from 'antd';
+import {
+  Card, Form, Input, Icon, Button, message,
+} from 'antd';
 import './assets/css/login.css';
 import 'antd/dist/antd.css';
 
