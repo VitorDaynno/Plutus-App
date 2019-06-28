@@ -1,51 +1,42 @@
 import React, { Component } from 'react';
-import { Table, Tabs, Tag, Row, Col, Button } from 'antd';
+import { Tabs, Row, Col, Button } from 'antd';
 import axios from 'axios';
 import '../assets/css/transactions.css';
 import NewTransaction from './newTransactions';
+import TransactionsTable from './transactionsTable';
 
 const TabPane = Tabs.TabPane;
-const { Column } = Table;
 
 class Transactions extends Component {
-    state = {
-        data: null,
-        visible: false        
+    
+    constructor() {
+        super()
+        const self = this;
+        self.state = {
+            data: null,
+            visible: false        
+        }
     }
     
     componentDidMount() {
         this.getTransactions();  
     }
 
-    getTransactions() {
+    getTransactions(params='') {
         var token = localStorage.getItem('token');
         const { history} = this.props;
-
-        axios.get(`/v1/transactions`,{ headers: { Authorization: "Bearer " + token } } )
+        let url = `/v1/transactions${params}` 
+        axios.get(url, { headers: { Authorization: "Bearer " + token } } )
             .then(res => {
                 this.setState({data: res.data})               
             })
             .catch(error => {
                 console.log(error);
-
                 if(error.response && error.response.status && error.response.status === 403) {
                     history.push('/');
-                }               
-               
+                }
             })              
     };
-
-    formatDate(dateString){
-        const date = new Date(dateString);
-
-        return date.toLocaleDateString();
-    }
-
-    formatTime(dateString) {
-        var time = new Date(dateString);
-
-        return time.toLocaleTimeString();
-    }
 
     showDrawer = () => {
         this.setState({visible: true}) 
@@ -57,6 +48,20 @@ class Transactions extends Component {
         });
         this.getTransactions();
     };
+
+    changedData = (key) => {
+        switch(key) {
+            case 2:
+                this.getTransactions('?onlyCredit=1');
+                break;
+            case 3:
+                this.getTransactions('?onlyCredit=0');
+                break;
+            default:
+                this.getTransactions('');
+                break;
+        }
+    }
 
     render() {      
         
@@ -72,61 +77,16 @@ class Transactions extends Component {
                 </Row>
                 <Row>
                     <Col className="col">
-                        <Tabs defaultActiveKey="1">
+                        <Tabs defaultActiveKey="1" onChange={this.changedData}>
                             <TabPane tab="Geral" key="1">
-                                <Table className="table" dataSource={data}>                    
-                                    <Column
-                                        title="Nome"
-                                        dataIndex="description"
-                                        key="description"
-                                    />     
-                                    <Column
-                                        title="Dia"
-                                        dataIndex="purchaseDate"
-                                        key="day"
-                                        render={purchaseDate => (
-                                            <span>
-                                                {this.formatDate(purchaseDate)}
-                                            </span>
-                                        )}                                        
-                                    />
-                                    <Column
-                                        title="Horário"
-                                        dataIndex="purchaseDate"
-                                        key="hours"
-                                        render={purchaseDate => (
-                                            <span>
-                                                {this.formatTime(purchaseDate)}
-                                            </span>
-                                        )}   
-                                    />                                           
-                                     <Column
-                                        title="Categorias"
-                                        dataIndex="categories"
-                                        key="tags"
-                                        render={categories => (
-                                            <span>
-                                                {categories.map(category => <Tag color="orange" key={category}>{category}</Tag>)}                                         
-                                            </span>
-                                        )}
-                                    />                             
-                                    <Column
-                                        title="Conta"
-                                        dataIndex="account.name"
-                                        key="account"
-                                    />
-                                    <Column
-                                        title="Valor"
-                                        dataIndex="value"
-                                        key="value"
-                                        render={value =>(
-                                            <span>
-                                                {value.toLocaleString('pt-BR', { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' })}
-                                            </span>)
-                                        }
-                                    />                                  
-                                </Table>                                
+                                <TransactionsTable data={data}/>                       
                             </TabPane>                                        
+                            <TabPane tab="Crédito" key="2">
+                                <TransactionsTable data={data}/>
+                            </TabPane>
+                            <TabPane tab="Outros" key="3">
+                                <TransactionsTable data={data}/>
+                            </TabPane>
                         </Tabs>
                     </Col>                
                 </Row>
