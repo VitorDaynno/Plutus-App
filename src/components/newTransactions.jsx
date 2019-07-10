@@ -48,22 +48,22 @@ class NewTransaction extends PureComponent {
       });
   }
 
-  removeCategory(removedCategory) {
+  removeCategory = (removedCategory) => {
     let { categories } = this.state;
     categories = categories.filter(category => category !== removedCategory);
     this.setState({ categories });
   }
 
-  showInputCategory() {
+  showInputCategory = () => {
     this.setState({ inputCategoryVisible: true });
   }
 
-  inputCategoryChange(e) {
+  inputCategoryChange = (e) => {
     const category = e.target.value;
     this.setState({ inputCategoryValue: category });
   }
 
-  inputCategoryConfirm() {
+  inputCategoryConfirm = () => {
     const { state } = this;
     const { inputCategoryValue } = state;
     let { categories } = state;
@@ -77,39 +77,39 @@ class NewTransaction extends PureComponent {
     });
   }
 
-  changeName(e) {
+  changeName = (e) => {
     const name = e.target.value;
     this.setState({ name });
   }
 
-  changeDate(e) {
+  changeDate = (e) => {
     let date = e;
     date = date ? date.format().split('T')[0] : date;
     this.setState({ date });
   }
 
-  changeTime(e) {
+  changeTime = (e) => {
     let time = e;
     time = time ? time.format('LTS') : time;
     this.setState({ time });
   }
 
-  changeValue(e) {
+  changeValue = (e) => {
     const value = e;
     this.setState({ value });
   }
 
-  changeAccount(e) {
+  changeAccount = (e) => {
     const account = e;
     this.setState({ account });
   }
 
-  changeInstallments(e) {
+  changeInstallments = (e) => {
     const installments = e;
     this.setState({ installments });
   }
 
-  saveTransactions() {
+  saveTransactions = () => {
     const { state } = this;
 
     this.validate();

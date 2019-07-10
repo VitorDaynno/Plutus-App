@@ -8,58 +8,76 @@ import Format from '../assets/helpers/format';
 
 class TopHeader extends Component {
 
-    state = {
-        balances: []
-    }
-    
-    componentDidMount() {
-        this.getBalances();  
-    }
+  constructor(props) {
+    super(props);
+    this.state = { balances: [] };
+  }
 
-    mountBalances() {
-        const { balances } = this.state;
-        return balances.map(balance => {
-            if (balance.balance < 0){
-                return <Tag color='red' key={balance.id}><span className="balance">{balance.name}:</span> {Format.money(balance.balance)}</Tag>
-            }
-            else if (balance.balance <= 100) {
-                return <Tag color='orange' key={balance.id}>{balance.name}: {Format.money(balance.balance)}</Tag>
-            } else {
-                return <Tag color='green' key={balance.id}>{balance.name}: {Format.money(balance.balance)}</Tag>
-            }
-        })        
-    }
+  componentDidMount() {
+    this.getBalances();
+  }
 
-    getBalances() {
-        var token = localStorage.getItem('token');
-        const { history} = this.props;
+  getBalances() {
+    const token = localStorage.getItem('token');
+    const { history} = this.props;
 
-        axios.get(`/v1/accounts/balances`,{ headers: { Authorization: "Bearer " + token } } )
-            .then(res => {
-                this.setState({balances: res.data})               
-            })
-            .catch(error => {
-                console.error(error);
+    axios.get('/v1/accounts/balances',{ headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => {
+        this.setState({ balances: res.data });
+      })
+      .catch((error) => {
+        console.error(error);
 
-                if(error.response && error.response.status && error.response.status === 403) {
-                    history.push('/');
-                }               
-               
-            })              
-    };
+        if (error.response && error.response.status && error.response.status === 403) {
+          history.push('/');
+        }
+      });
+  }
 
-    render() {      
-        
+  mountBalances() {
+    const { balances } = this.state;
+    return balances.map((balance) => {
+      if (balance.balance < 0) {
         return (
-            <div className="topHeader">
-                <div>
-                    <h2 id="logo">Plutus</h2>
-                </div>
-                <div>
-                    {this.mountBalances()}
-                </div>                
-            </div>)
-    }
+          <Tag color="red" key={balance.id}>
+            <span className="balance">
+              {balance.name}
+              :
+            </span>
+            {Format.money(balance.balance)}
+          </Tag>
+        );
+      } if (balance.balance <= 100) {
+        return (
+          <Tag color="orange" key={balance.id}>
+            {balance.name}
+            :
+            {Format.money(balance.balance)}
+          </Tag>
+        );
+      }
+      return (
+        <Tag color="green" key={balance.id}>
+          {balance.name}
+          :
+          {Format.money(balance.balance)}
+        </Tag>
+      );
+    });
+  }
+
+  render() {
+    return (
+      <div className="topHeader">
+        <div>
+          <h2 id="logo">Plutus</h2>
+        </div>
+        <div>
+          {this.mountBalances()}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default TopHeader;
