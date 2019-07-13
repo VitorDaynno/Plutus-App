@@ -20,6 +20,7 @@ const { Option } = Select;
 class Transaction extends Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.state = {
       accounts: [],
       categories: [],

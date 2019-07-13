@@ -1,26 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import {
   Drawer,
-  Input,
-  Row,
-  Col,
-  DatePicker,
-  TimePicker,
-  InputNumber,
-  Tag,
-  Tooltip,
-  Icon,
-  Select,
-  Button,
-  message,
   Tabs,
 } from 'antd';
 
 import Transaction from './transaction';
 import '../assets/css/newTransactions.css';
 
-const { Option } = Select;
 const { TabPane } = Tabs;
 
 class NewTransaction extends Component { 
@@ -30,26 +16,8 @@ class NewTransaction extends Component {
     this.state = {};
   }
 
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
   render() {
     const { visible, onClose } = this.props;
-    const {
-      categories,
-      inputCategoryValue,
-      inputCategoryVisible,
-      accounts,
-    } = this.state;
 
     return (
       <div>
@@ -63,9 +31,11 @@ class NewTransaction extends Component {
         >
           <Tabs defaultActiveKey="1">
             <TabPane tab="Despesa" key="1">
-              <Transaction/>
+              <Transaction onClose={onClose} />
             </TabPane>
-            <TabPane tab="Receita" key="2" />
+            <TabPane tab="Receita" key="2">
+              <Transaction onClose={onClose} />
+            </TabPane>
           </Tabs>
         </Drawer>
       </div>
