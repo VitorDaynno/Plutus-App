@@ -20,11 +20,11 @@ const { Option } = Select;
 class Transaction extends Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.state = {
       accounts: [],
       categories: [],
       inputCategoryVisible: false,
+      installmentsVisible: false,
     };
   }
 
@@ -69,19 +69,31 @@ class Transaction extends Component {
     this.setState({ value });
   }
 
-  changeAccount = (e) => {
-    const account = e;
-    this.setState({ account });
-  }
-
   changeInstallments = (e) => {
     const installments = e;
     this.setState({ installments });
   }
   
   changeAccount = (e) => {
-    const account = e;
+    let account = e;
     this.setState({ account });
+
+    const { accounts } = this.state;
+    account = accounts.filter(function(i){
+      return i.id === account
+    })
+    
+    this.changeStatusInstallments(account[0])
+  }
+
+  changeStatusInstallments = (account) => {
+    let installmentsVisible;
+    if(account.type === 'credit') {
+      installmentsVisible = true;
+    } else {
+      installmentsVisible = false;
+    }
+    this.setState({installmentsVisible, installments: null })
   }
 
   removeCategory = (removedCategory) => {
@@ -173,6 +185,7 @@ class Transaction extends Component {
       inputCategoryValue,
       inputCategoryVisible,
       accounts,
+      installmentsVisible
     } = this.state;
 
     return (
@@ -199,7 +212,7 @@ class Transaction extends Component {
           <Col span={8}>
             <label className="label">Valor:</label>
             <br />
-            <InputNumber precision="2" onChange={this.changeValue} style={{ width: 120 }} />
+            <InputNumber precision={2} onChange={this.changeValue} style={{ width: 120 }} />
           </Col>
           <Col span={8}>
             <label className="label">Conta:</label>
@@ -208,15 +221,16 @@ class Transaction extends Component {
               {accounts.map(account => <Option value={account.id}>{account.name}</Option>)}
             </Select>
           </Col>
-          <Col span={8}>
+          {installmentsVisible && (<Col span={8}>
             <label className="label">N° de parcelas:</label>
             <br />
             <InputNumber
-              precision="0"
+              precision={0}
               onChange={this.changeInstallments}
               style={{ width: 120 }}
+              
             />
-          </Col>
+          </Col>)}
         </Row>
               <Row className="new-transaction-row">
                 <Col>
