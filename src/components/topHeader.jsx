@@ -72,7 +72,7 @@ class TopHeader extends Component {
         <div>
           <h2 id="logo">Plutus</h2>
         </div>
-        <div>
+        <div className="balances">
           {this.mountBalances()}
         </div>
       </div>

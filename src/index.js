@@ -24,8 +24,8 @@ ReactDOM.render(
             <Switch>
                 <Route exact path='/' component={Login} />
                 <div className="container-plutus">
-                    <Header className="header">
-                        <TopHeader />
+                    <Header className="header" >
+                        <TopHeader style={{zIndex:"100000"}} />
                     </Header>
                     <Layout>
                         <Sider>

@@ -1,3 +1,7 @@
 .content {
     min-height:  95vh
 }
+
+.header {
+    min-height: 14vh;
+}
