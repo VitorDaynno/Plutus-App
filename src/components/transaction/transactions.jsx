@@ -6,7 +6,7 @@ import {
   Button,
 } from 'antd';
 import axios from 'axios';
-import '../assets/css/transactions.css';
+import '../../assets/css/transactions.css';
 import NewTransaction from './newTransactions';
 import TransactionsTable from './transactionsTable';
 

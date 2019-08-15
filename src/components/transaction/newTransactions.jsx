@@ -5,7 +5,7 @@ import {
 } from 'antd';
 
 import Transaction from './transaction';
-import '../assets/css/newTransactions.css';
+import '../../assets/css/newTransactions.css';
 
 const { TabPane } = Tabs;
 
@@ -31,10 +31,10 @@ class NewTransaction extends Component {
         >
           <Tabs defaultActiveKey="1">
             <TabPane tab="Despesa" key="1">
-              <Transaction onClose={onClose} />
+              <Transaction onClose={onClose} type="1" />
             </TabPane>
             <TabPane tab="Receita" key="2">
-              <Transaction onClose={onClose} />
+              <Transaction onClose={onClose} type="2" />
             </TabPane>
           </Tabs>
         </Drawer>

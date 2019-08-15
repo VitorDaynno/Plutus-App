@@ -25,6 +25,7 @@ class Transaction extends Component {
       categories: [],
       inputCategoryVisible: false,
       installmentsVisible: false,
+      type: props.type,
     };
   }
 
@@ -65,7 +66,11 @@ class Transaction extends Component {
   }
 
   changeValue = (e) => {
-    const value = e;
+    const { type } = this.state;
+    let value = e;
+    if(type == 1) {
+      value = value * -1;
+    }
     this.setState({ value });
   }
 
@@ -148,9 +153,11 @@ class Transaction extends Component {
     axios.post('/v1/transactions', transaction, { headers: { Authorization: `Bearer ${token}` } })
       .then(() => {
         const { onClose } = this.props;
+        message.success('Transação salva com sucesso!');
         onClose();
       })
       .catch((error) => {
+        message.error(error);
         console.log(error);
 
         if (error.response && error.response.status && error.response.status === 403) {
