@@ -14,6 +14,7 @@ import {
   message
 } from 'antd';
 import axios from 'axios';
+import locale from 'antd/es/date-picker/locale/pt_BR';
 
 const { Option } = Select;
 
@@ -198,44 +199,42 @@ class Transaction extends Component {
     return (
       <div>
         <Row className="new-transaction-row">
-          <Col>
+          <Col span={24}>
             <label className="label"> Nome:</label>
             <Input onChange={this.changeName} />
           </Col>
         </Row>
         <Row className="new-transaction-row">
-          <Col span={12}>
+          <Col className="date-group" span={8}>
             <label className="label">Data:</label>
             <br />
-            <DatePicker format="DD/MM/YYYY" onChange={this.changeDate} />
+            <DatePicker format="DD/MM/YYYY" locale={locale} onChange={this.changeDate} />
           </Col>
-          <Col span={12}>
+          <Col className="date-group" span={7} >
             <label className="label">Horário:</label>
             <br />
-            <TimePicker onChange={this.changeTime} />
+            <TimePicker className="max" onChange={this.changeTime}/>
+          </Col>
+          <Col span={7}>
+            <label className="label">Valor:</label>
+            <br />
+            <InputNumber className="max" precision={2} onChange={this.changeValue}/>
           </Col>
         </Row>
         <Row className="new-transaction-row">
-          <Col span={8}>
-            <label className="label">Valor:</label>
-            <br />
-            <InputNumber precision={2} onChange={this.changeValue} style={{ width: 120 }} />
-          </Col>
-          <Col span={8}>
+          <Col className="date-group" span={11}>
             <label className="label">Conta:</label>
             <br />
-            <Select onChange={this.changeAccount} style={{ width: 120 }}>
+            <Select className="max" onChange={this.changeAccount}>
               {accounts.map(account => <Option value={account.id}>{account.name}</Option>)}
             </Select>
           </Col>
-          {installmentsVisible && (<Col span={8}>
+          {installmentsVisible && (<Col span={12}>
             <label className="label">N° de parcelas:</label>
             <br />
             <InputNumber
               precision={0}
-              onChange={this.changeInstallments}
-              style={{ width: 120 }}
-              
+              onChange={this.changeInstallments}              
             />
           </Col>)}
         </Row>
