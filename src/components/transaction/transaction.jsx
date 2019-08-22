@@ -56,22 +56,16 @@ class Transaction extends Component {
 
   changeDate = (e) => {
     let date = e;
-    date = date ? date.format().split('T')[0] : date;
     this.setState({ date });
   }
 
   changeTime = (e) => {
     let time = e;
-    time = time ? time.format('LTS') : time;
     this.setState({ time });
   }
 
   changeValue = (e) => {
-    const { type } = this.state;
     let value = e;
-    if(type == 1) {
-      value = value * -1;
-    }
     this.setState({ value });
   }
 
@@ -132,21 +126,36 @@ class Transaction extends Component {
   }
 
   saveTransactions = () => {
-    const { state } = this;
+    const { 
+      name,
+      account,
+      installments,
+      categories,
+      type,
+       } = this.state;
+    
+    let {
+      date,
+      time,
+      value,
+    } = this.state;
 
     const isError = this.validate();
 
     if(!isError){
       const transaction = {};
+      
+      date = date ? date.format().split('T')[0] : date;
+      time = time ? time.format('LTS') : time;
+      value = type === "1" ? value * -1 : value;
+      transaction.description = name;
+      transaction.purchaseDate = `${date} ${time}`;
+      transaction.value = value;
+      transaction.account = account;
+      transaction.categories = categories;
 
-    transaction.description = state.name;
-    transaction.purchaseDate = `${state.date} ${state.time}`;
-    transaction.value = state.value;
-    transaction.account = state.account;
-    transaction.categories = state.categories;
-
-    if (state.installments) {
-      transaction.installments = state.installments;
+    if (installments) {
+      transaction.installments = installments;
     }
 
     const token = localStorage.getItem('token');
@@ -157,8 +166,9 @@ class Transaction extends Component {
         const { onClose } = this.props;
         
         message.success('Transação salva com sucesso!');
+        
         onClose();
-        this.render()
+        this.clearFields()
       })
       .catch((error) => {
         message.error(error);
@@ -168,7 +178,7 @@ class Transaction extends Component {
       });
     }
   }
-
+  
   validate() {
     const { state } = this;
     let error = false;
@@ -197,13 +207,41 @@ class Transaction extends Component {
     return error;
   }
 
+  clearFields(){
+    const name = null;
+    const date = null;
+    const time = null;
+    const value = null;
+    const account = null;
+    const installments = null;
+    const installmentsVisible = false;
+    const categories = [];
+
+    this.setState({
+      name,
+      date,
+      time,
+      value,
+      account,
+      installments,
+      installmentsVisible,
+      categories
+    });
+  }
+
   render() {
     const {
       categories,
       inputCategoryValue,
       inputCategoryVisible,
       accounts,
-      installmentsVisible
+      installmentsVisible,
+      name,
+      date,
+      time,
+      value,
+      account,
+      installments
     } = this.state;
       
     return (
@@ -211,29 +249,29 @@ class Transaction extends Component {
         <Row className="new-transaction-row">
           <Col span={24}>
             <label className="label"> Nome:</label>
-            <Input onChange={this.changeName} />
+            <Input onChange={this.changeName} value={name}/>
           </Col>
         </Row>
         <Row className="new-transaction-row">
           <Col className="date-group" lg={8} xs={24}>
             <label className="label">Data:</label>
-            <DatePicker format="DD/MM/YYYY" locale={locale} onChange={this.changeDate} />
+            <DatePicker format="DD/MM/YYYY" locale={locale} onChange={this.changeDate} value={date}/>
           </Col>
           <Col className="date-group" lg={7} xs={24}>
             <label className="label">Horário:</label>
-            <TimePicker className="max" onChange={this.changeTime}/>
+            <TimePicker className="max" onChange={this.changeTime} value={time}/>
           </Col>
           <Col lg={7} xs={24}>
             <label className="label">Valor:</label>
             <br />
-            <InputNumber className="max" precision={2} onChange={this.changeValue}/>
+            <InputNumber className="max" precision={2} onChange={this.changeValue} value={value}/>
           </Col>
         </Row>
         <Row className="new-transaction-row">
           <Col className="date-group" lg={11} xs={24}>
             <label className="label">Conta:</label>
             <br />
-            <Select className="max" onChange={this.changeAccount}>
+            <Select className="max" onChange={this.changeAccount} value={account}>
               {accounts.map(account => <Option value={account.id}>{account.name}</Option>)}
             </Select>
           </Col>
@@ -242,7 +280,8 @@ class Transaction extends Component {
             <br />
             <InputNumber
               precision={0}
-              onChange={this.changeInstallments}              
+              onChange={this.changeInstallments}
+              value={installments}          
             />
           </Col>)}
         </Row>
