@@ -1,3 +1,11 @@
 .new-transaction-row {
-    margin-bottom: 15px
+    margin-bottom: 15px;
+}
+
+.date-group {
+    margin-right: 10px;
+}
+
+.max {
+    width: 100%;
 }
