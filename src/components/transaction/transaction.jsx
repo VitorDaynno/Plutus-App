@@ -264,7 +264,7 @@ class Transaction extends Component {
           <Col lg={7} xs={24}>
             <label className="label">Valor:</label>
             <br />
-            <InputNumber className="max" precision={2} onChange={this.changeValue} value={value}/>
+            <InputNumber className="max" precision={2} onChange={this.changeValue} value={value} decimalSeparator=","/>
           </Col>
         </Row>
         <Row className="new-transaction-row">
