@@ -26,7 +26,7 @@ class Transaction extends Component {
       categories: [],
       inputCategoryVisible: false,
       installmentsVisible: false,
-      type: props.type,
+      type: props.type
     };
   }
 
@@ -160,7 +160,6 @@ class Transaction extends Component {
 
     const token = localStorage.getItem('token');
     const { history } = this.props;
-
     axios.post('/v1/transactions', transaction, { headers: { Authorization: `Bearer ${token}` } })
       .then(() => {
         const { onClose } = this.props;

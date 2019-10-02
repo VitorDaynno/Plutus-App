@@ -13,12 +13,13 @@ import TransactionsTable from './transactionsTable';
 const { TabPane } = Tabs;
 
 class Transactions extends Component {
+
   constructor() {
     super();
     const self = this;
     self.state = {
       data: null,
-      visible: false,
+      visible: false
     };
   }
 
@@ -33,7 +34,7 @@ class Transactions extends Component {
     this.getTransactions();
   }
 
-  getTransactions(params = '') {
+  getTransactions = (params='') => {
     const token = localStorage.getItem('token');
     const { history } = this.props;
     const url = `/v1/transactions${params}`;
@@ -53,13 +54,10 @@ class Transactions extends Component {
     this.setState({ visible: true });
   }
 
-  changedData(key) {
+  changedData = (key) => {
     switch (key) {
-      case 2:
+      case '2':
         this.getTransactions('?onlyCredit=1');
-        break;
-      case 3:
-        this.getTransactions('?onlyCredit=0');
         break;
       default:
         this.getTransactions('');
@@ -69,6 +67,8 @@ class Transactions extends Component {
 
   render() {
     const { data } = this.state;
+    const { history } = this.props;
+    
     return (
       <div>
         <Row>
@@ -82,13 +82,10 @@ class Transactions extends Component {
           <Col className="col">
             <Tabs defaultActiveKey="1" onChange={this.changedData}>
               <TabPane tab="Geral" key="1">
-                <TransactionsTable data={data} />
+                <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('')}/>
               </TabPane>
               <TabPane tab="Crédito" key="2">
-                <TransactionsTable data={data} />
-              </TabPane>
-              <TabPane tab="Outros" key="3">
-                <TransactionsTable data={data} />
+                <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('?onlyCredit=1')}/>
               </TabPane>
             </Tabs>
           </Col>
