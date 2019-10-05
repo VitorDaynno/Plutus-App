@@ -18,6 +18,11 @@ import './assets/css/index.css';
 
 const { Header, Sider, Content } = Layout;
 
+const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+console.log(Math.max(document.documentElement.clientWidth, window.innerWidth || 0));
+
+let isCollapsed = width <= 768 ? true : false;
+
 ReactDOM.render(
   (
     <Router>
@@ -28,7 +33,7 @@ ReactDOM.render(
             <TopHeader />
           </Header>
           <Layout>
-            <Sider>
+            <Sider collapsed={isCollapsed}>
               <Menu />
             </Sider>
             <Content className="content">
