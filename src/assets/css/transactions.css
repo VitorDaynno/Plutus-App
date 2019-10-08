@@ -4,6 +4,7 @@
 }
 .table {
     margin: 10px;
+    overflow: auto;
 }
 .transaction-row {
     margin-top: 5px;

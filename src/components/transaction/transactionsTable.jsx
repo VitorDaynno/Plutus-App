@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Tag, Popconfirm, Icon, message } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 
 const { Column } = Table;
 
@@ -32,6 +33,15 @@ class TransactionsTable extends Component {
       });
     }
   
+  sorterDate(a, b) {   
+    return a > b ? 1 : -1
+  }
+
+  sorterHours(a, b) {   
+    a = moment(a);
+    b = moment(b);
+    return a.isBefore(b) ? -1 : 1
+  }
 
   render() {
     const { data, getTransactions } = this.props ? this.props : {};
@@ -42,11 +52,13 @@ class TransactionsTable extends Component {
             title="Nome"
             dataIndex="description"
             key="description"
+            sorter={(a, b) => a.account.name.length - b.account.name.length}
           />
           <Column
             title="Dia"
             dataIndex="purchaseDate"
             key="day"
+            sorter={(a, b) => this.sorterDate(a.purchaseDate, b.purchaseDate)}
             render={purchaseDate => (
               <span>
                 {this.formatDate(purchaseDate)}
@@ -57,6 +69,7 @@ class TransactionsTable extends Component {
             title="Horário"
             dataIndex="purchaseDate"
             key="hours"
+            sorter={(a, b) => this.sorterHours(a.purchaseDate, b.purchaseDate)}
             render={purchaseDate => (
               <span>
                 {this.formatTime(purchaseDate)}
@@ -77,11 +90,13 @@ class TransactionsTable extends Component {
             title="Conta"
             dataIndex="account.name"
             key="account"
+            sorter={(a, b) => a.account.name.length - b.account.name.length}
           />
           <Column
             title="Valor"
             dataIndex="value"
             key="value"
+            sorter={(a, b) => a.value.length - b.value.length}
             render={value => (
               <span>
                 {value.toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })}
