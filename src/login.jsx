@@ -5,7 +5,7 @@ import {
 import './assets/css/login.css';
 import 'antd/dist/antd.css';
 
-import Authentication from './assets/helpers/authentication';
+import Authentication from './helpers/authentication';
 
 const FormItem = Form.Item;
 

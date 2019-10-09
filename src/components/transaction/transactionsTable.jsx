@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
 import { Table, Tag, Popconfirm, Icon, message } from 'antd';
 import axios from 'axios';
-import moment from 'moment';
+import Sorter from '../../helpers/sorter';
+import Format from '../../helpers/format';
 
 const { Column } = Table;
 
 class TransactionsTable extends Component {
-
-  formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
-  }
-
-  formatTime(dateString) {
-    const time = new Date(dateString);
-    return time.toLocaleTimeString();
-  }
 
   removeTransactions(id, getTransactions) {
     const token = localStorage.getItem('token');
@@ -31,18 +22,8 @@ class TransactionsTable extends Component {
           history.push('/');
         }
       });
-    }
+  }
   
-  sorterDate(a, b) {   
-    return a > b ? 1 : -1
-  }
-
-  sorterHours(a, b) {   
-    a = moment(a);
-    b = moment(b);
-    return a.isBefore(b) ? -1 : 1
-  }
-
   render() {
     const { data, getTransactions } = this.props ? this.props : {};
     return (
@@ -58,10 +39,10 @@ class TransactionsTable extends Component {
             title="Dia"
             dataIndex="purchaseDate"
             key="day"
-            sorter={(a, b) => this.sorterDate(a.purchaseDate, b.purchaseDate)}
+            sorter={(a, b) => Sorter.sorterDate(a.purchaseDate, b.purchaseDate)}
             render={purchaseDate => (
               <span>
-                {this.formatDate(purchaseDate)}
+                {Format.formatDate(purchaseDate)}
               </span>
             )}
           />
@@ -69,20 +50,10 @@ class TransactionsTable extends Component {
             title="Horário"
             dataIndex="purchaseDate"
             key="hours"
-            sorter={(a, b) => this.sorterHours(a.purchaseDate, b.purchaseDate)}
+            sorter={(a, b) => Sorter.sorterHours(a.purchaseDate, b.purchaseDate)}
             render={purchaseDate => (
               <span>
-                {this.formatTime(purchaseDate)}
-              </span>
-            )}
-          />
-          <Column
-            title="Categorias"
-            dataIndex="categories"
-            key="tags"
-            render={categories => (
-              <span>
-                {categories.map(category => <Tag color="orange" key={category}>{category}</Tag>)}
+                {Format.formatTime(purchaseDate)}
               </span>
             )}
           />
@@ -96,10 +67,20 @@ class TransactionsTable extends Component {
             title="Valor"
             dataIndex="value"
             key="value"
-            sorter={(a, b) => a.value.length - b.value.length}
+            sorter={(a, b) => Sorter.sorterValue(a.value, b.value)}
             render={value => (
               <span>
                 {value.toLocaleString('pt-BR', { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' })}
+              </span>
+            )}
+          />
+          <Column
+            title="Categorias"
+            dataIndex="categories"
+            key="tags"
+            render={categories => (
+              <span>
+                {categories.map(category => <Tag color="orange" key={category}>{category}</Tag>)}
               </span>
             )}
           />
