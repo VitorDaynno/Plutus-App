@@ -82,7 +82,7 @@ class Transactions extends Component {
           <Col className="col">
             <Tabs defaultActiveKey="1" onChange={this.changedData}>
               <TabPane tab="Geral" key="1">
-                <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('')}/>
+                <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('')} showDrawer={() => this.showDrawer()}/>
               </TabPane>
               <TabPane tab="Crédito" key="2">
                 <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('?onlyCredit=1')}/>
