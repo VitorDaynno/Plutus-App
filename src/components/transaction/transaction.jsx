@@ -30,7 +30,7 @@ class Transaction extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount() {   
     this.getAccounts();
   }
   
@@ -227,6 +227,8 @@ class Transaction extends Component {
       categories
     });
   }
+
+
 
   render() {
     const {

@@ -5,11 +5,11 @@ import {
 } from 'antd';
 
 import Transaction from './transaction';
-import '../../assets/css/newTransactions.css';
+import '../../assets/css/transactionDrawer.css';
 
 const { TabPane } = Tabs;
 
-class NewTransaction extends Component { 
+class TransactionDrawer extends Component { 
 
   constructor(props) {
     super(props);
@@ -17,7 +17,7 @@ class NewTransaction extends Component {
   }
 
   render() {
-    const { visible, onClose } = this.props;
+    const { visible, onClose, transaction } = this.props;
 
     return (
       <div>
@@ -31,10 +31,10 @@ class NewTransaction extends Component {
         >
           <Tabs defaultActiveKey="1">
             <TabPane tab="Despesa" key="1">
-              <Transaction onClose={onClose} type="1" />
+              <Transaction onClose={onClose} type="1" transaction={transaction} />
             </TabPane>
             <TabPane tab="Receita" key="2">
-              <Transaction onClose={onClose} type="2" />
+              <Transaction onClose={onClose} type="2" transaction={transaction}/>
             </TabPane>
           </Tabs>
         </Drawer>
@@ -43,4 +43,4 @@ class NewTransaction extends Component {
   }
 }
 
-export default NewTransaction;
+export default TransactionDrawer;

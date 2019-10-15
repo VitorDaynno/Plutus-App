@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import axios from 'axios';
 import '../../assets/css/transactions.css';
-import NewTransaction from './newTransactions';
+import TransactionDrawer from './transactionDrawer';
 import TransactionsTable from './transactionsTable';
 
 const { TabPane } = Tabs;
@@ -50,8 +50,8 @@ class Transactions extends Component {
       });
   }
 
-  showDrawer = () => {
-    this.setState({ visible: true });
+  showDrawer = (transaction) => {
+    this.setState({ visible: true, transaction });
   }
 
   changedData = (key) => {
@@ -73,7 +73,7 @@ class Transactions extends Component {
       <div>
         <Row>
           <Col className="transaction-row">
-            <Button onClick={this.showDrawer}>
+            <Button onClick={() => this.showDrawer({})}>
               Nova
             </Button>
           </Col>
@@ -82,7 +82,7 @@ class Transactions extends Component {
           <Col className="col">
             <Tabs defaultActiveKey="1" onChange={this.changedData}>
               <TabPane tab="Geral" key="1">
-                <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('')} showDrawer={() => this.showDrawer()}/>
+                <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('')} showDrawer={this.showDrawer}/>
               </TabPane>
               <TabPane tab="Crédito" key="2">
                 <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('?onlyCredit=1')}/>
@@ -90,9 +90,10 @@ class Transactions extends Component {
             </Tabs>
           </Col>
         </Row>
-        <NewTransaction
+        <TransactionDrawer
           onClose={this.onClose}
-          visible={this.state.visible}		
+          visible={this.state.visible}
+          transaction={this.state.transaction}
         />
       </div>
     );
