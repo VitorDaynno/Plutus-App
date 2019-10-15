@@ -30,7 +30,8 @@ class Transaction extends Component {
     };
   }
 
-  componentDidMount() {   
+  componentDidMount() {
+    const { transaction } = this.props;
     this.getAccounts();
   }
   

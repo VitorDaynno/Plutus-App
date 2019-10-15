@@ -50,7 +50,7 @@ class Transactions extends Component {
       });
   }
 
-  showDrawer = (transaction) => {
+  showDrawer = (transaction={}) => {
     this.setState({ visible: true, transaction });
   }
 
