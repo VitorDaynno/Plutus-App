@@ -22,7 +22,7 @@ class TransactionDrawer extends Component {
     return (
       <div>
         <Drawer
-          title="Nova Transação"
+          title={this.props.title}
           placement="right"
           width="50%"
           closable="true"

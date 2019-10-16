@@ -15,6 +15,8 @@ import {
 } from 'antd';
 import axios from 'axios';
 import locale from 'antd/es/date-picker/locale/pt_BR';
+import moment from 'moment';
+
 
 const { Option } = Select;
 
@@ -32,6 +34,11 @@ class Transaction extends Component {
 
   componentDidMount() {
     const { transaction } = this.props;
+
+    if(transaction.id){
+      this.setValues(transaction)
+    }
+
     this.getAccounts();
   }
   
@@ -48,6 +55,26 @@ class Transaction extends Component {
           history.push('/');
         }
       });
+  }
+
+  setValues(transaction) {
+    const name = transaction.description;
+    const date = moment(transaction.purchaseDate);
+    const time = moment(transaction.purchaseDate);
+    const value = transaction.value;
+    const account = transaction.account.id;
+    const installmentsVisible = false;
+    const categories = transaction.categories;
+
+    this.setState({
+      name,
+      date,
+      time,
+      value,
+      account,
+      installmentsVisible,
+      categories
+    });
   }
 
   changeName = (e) => {
@@ -228,8 +255,6 @@ class Transaction extends Component {
       categories
     });
   }
-
-
 
   render() {
     const {

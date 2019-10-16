@@ -50,8 +50,8 @@ class Transactions extends Component {
       });
   }
 
-  showDrawer = (transaction={}) => {
-    this.setState({ visible: true, transaction });
+  showDrawer = (title, transaction={}) => {
+    this.setState({ visible: true, transaction, title });
   }
 
   changedData = (key) => {
@@ -73,7 +73,7 @@ class Transactions extends Component {
       <div>
         <Row>
           <Col className="transaction-row">
-            <Button onClick={() => this.showDrawer({})}>
+            <Button onClick={() => this.showDrawer("Nova Transação", {})}>
               Nova
             </Button>
           </Col>
@@ -91,6 +91,7 @@ class Transactions extends Component {
           </Col>
         </Row>
         <TransactionDrawer
+          title={this.state.title}
           onClose={this.onClose}
           visible={this.state.visible}
           transaction={this.state.transaction}
