@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   Drawer,
   Tabs,
@@ -9,33 +9,39 @@ import '../../assets/css/transactionDrawer.css';
 
 const { TabPane } = Tabs;
 
-class TransactionDrawer extends Component { 
-
-  constructor(props) {
-    super(props);
-    this.state = {};
+const panels = [
+  {
+    key: 1,
+    title: "Despesa"
+  }, {
+    key: 2,
+    title: "Receita"
   }
+]
+
+class TransactionDrawer extends PureComponent { 
 
   render() {
-    const { visible, onClose, transaction } = this.props;
+    const { visible, onClose, transaction, title, activeTab } = this.props;
 
     return (
       <div>
         <Drawer
-          title={this.props.title}
+          title={title}
           placement="right"
           width="50%"
           closable="true"
           onClose={onClose}
           visible={visible}
         >
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="Despesa" key="1">
-              <Transaction onClose={onClose} type="1" transaction={transaction} />
-            </TabPane>
-            <TabPane tab="Receita" key="2">
-              <Transaction onClose={onClose} type="2" transaction={transaction}/>
-            </TabPane>
+          <Tabs defaultActiveKey={activeTab}>
+            { panels.map((panel) => {
+              return (
+                <TabPane tab={panel.title} key={panel.key}>
+                  <Transaction onClose={onClose} type={panel.key} transaction={transaction} />
+                </TabPane>
+              )
+            })}
           </Tabs>
         </Drawer>
       </div>

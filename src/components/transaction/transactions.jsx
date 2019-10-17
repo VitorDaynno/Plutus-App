@@ -50,8 +50,8 @@ class Transactions extends Component {
       });
   }
 
-  showDrawer = (title, transaction={}) => {
-    this.setState({ visible: true, transaction, title });
+  showDrawer = (title, transaction={}, tab) => {
+    this.setState({ visible: true, transaction, title, tab });
   }
 
   changedData = (key) => {
@@ -85,7 +85,7 @@ class Transactions extends Component {
                 <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('')} showDrawer={this.showDrawer}/>
               </TabPane>
               <TabPane tab="Crédito" key="2">
-                <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('?onlyCredit=1')}/>
+                <TransactionsTable data={data} history={history} getTransactions={() => this.getTransactions('?onlyCredit=1')} showDrawer={this.showDrawer}/>
               </TabPane>
             </Tabs>
           </Col>
@@ -95,6 +95,7 @@ class Transactions extends Component {
           onClose={this.onClose}
           visible={this.state.visible}
           transaction={this.state.transaction}
+          activeTab={this.state.activeTab}
         />
       </div>
     );
