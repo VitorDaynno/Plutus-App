@@ -26,57 +26,14 @@ class Transaction extends Component {
     this.state = {
       accounts: [],
       categories: [],
-      inputCategoryVisible: false,
-      installmentsVisible: false,
       type: props.type
     };
-  }
-
-  changeTime = (e) => {
-    let time = e;
-    this.setState({ time });
-  }
-
-  changeInstallments = (e) => {
-    const installments = e;
-    this.setState({ installments });
-  }
-  
-  changeAccount = (e) => {
-    let account = e;
-    this.setState({ account });
-
-    const { accounts } = this.state;
-    account = accounts.filter(function(i){
-      return i.id === account
-    })
-    
-    this.changeStatusInstallments(account[0])
-  }
-
-  changeStatusInstallments = (account) => {
-    let installmentsVisible;
-    if(account.type === 'credit') {
-      installmentsVisible = true;
-    } else {
-      installmentsVisible = false;
-    }
-    this.setState({installmentsVisible, installments: null })
   }
 
   removeCategory = (removedCategory) => {
     let { categories } = this.state;
     categories = categories.filter(category => category !== removedCategory);
     this.setState({ categories });
-  }
-
-  showInputCategory = () => {
-    this.setState({ inputCategoryVisible: true });
-  }
-
-  inputCategoryChange = (e) => {
-    const category = e.target.value;
-    this.setState({ inputCategoryValue: category });
   }
 
   inputCategoryConfirm = () => {
@@ -197,12 +154,23 @@ class Transaction extends Component {
   }
 
   render() {
-    const { transaction, accounts, changeValue, changeDescription, changeDate } = this.props;
-
-    let {
+    const { 
+      transaction, 
+      accounts,
       inputCategoryValue,
       inputCategoryVisible,
       installmentsVisible,
+      changeValue,
+      changeDescription,
+      changeDate,
+      changeTime,
+      changeAccount,
+      changeInstallments,
+      showInputCategory,
+      inputCategoryChange
+    } = this.props;
+
+    const {
       description,
       date,
       time,
@@ -211,7 +179,7 @@ class Transaction extends Component {
       installments,
       categories
     } = transaction ? transaction : {};
-
+    
     return (
       <div>
         <Row className="new-transaction-row">
@@ -227,7 +195,7 @@ class Transaction extends Component {
           </Col>
           <Col className="date-group" lg={7} xs={24}>
             <label className="label">Horário:</label>
-            <TimePicker className="max" onChange={this.changeTime} value={time}/>
+            <TimePicker className="max" onChange={changeTime} value={time}/>
           </Col>
           <Col lg={7} xs={24}>
             <label className="label">Valor:</label>
@@ -239,7 +207,7 @@ class Transaction extends Component {
           <Col className="date-group" lg={11} xs={24}>
             <label className="label">Conta:</label>
             <br />
-            <Select className="max" onChange={this.changeAccount} value={account && account.id}>
+            <Select className="max" onChange={changeAccount} value={account && account.id}>
               {accounts.map(account => <Option value={account && account.id}>{account.name}</Option>)}
             </Select>
           </Col>
@@ -248,7 +216,7 @@ class Transaction extends Component {
             <br />
             <InputNumber
               precision={0}
-              onChange={this.changeInstallments}
+              onChange={changeInstallments}
               value={installments}          
             />
           </Col>)}
@@ -275,14 +243,14 @@ class Transaction extends Component {
                 size="small"
                 style={{ width: 78 }}
                 value={inputCategoryValue}
-                onChange={this.inputCategoryChange}
+                onChange={inputCategoryChange}
                 onBlur={this.inputCategoryConfirm}
                 onPressEnter={this.inputCategoryConfirm}
               />
             )}
             {!inputCategoryVisible && (
               <Tag
-                onClick={this.showInputCategory}
+                onClick={showInputCategory}
                 style={{ background: '#fff', borderStyle: 'dashed' }}
               >
                 <Icon type="plus" />

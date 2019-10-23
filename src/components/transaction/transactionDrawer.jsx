@@ -24,7 +24,9 @@ class TransactionDrawer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      accounts: []
+      accounts: [],
+      inputCategoryVisible: false,
+      installmentsVisible: false
     };
   }
 
@@ -61,11 +63,60 @@ class TransactionDrawer extends Component {
     this.setState({ date });
   }
 
+  changeTime = (e) => {
+    let time = e;
+    const { transaction } = this.state;
+    transaction.time = time;
+    this.setState({ transaction });
+  }
+
   changeValue = (e) => {
     let value = e;
     const { transaction } = this.state;
     transaction.value = value;
     this.setState({ transaction });
+  }
+
+  changeAccount = (e) => {
+    let account = e;
+
+    const { accounts } = this.state;
+    account = accounts.filter(function(i){
+      return i.id === account
+    })
+
+    const { transaction } = this.state;
+    transaction.account = account[0];
+
+    this.setState({ transaction });
+
+    this.changeStatusInstallments(account[0])
+  }
+
+  changeStatusInstallments = (account) => {
+    let installmentsVisible = false;
+    if(account.type === 'credit') {
+      installmentsVisible = true;
+    } else {
+      installmentsVisible = false;
+    }
+    this.setState({installmentsVisible, installments: null })
+  }
+
+  changeInstallments = (e) => {
+    const installments = e;
+    const { transaction } = this.state;
+    transaction.installments = installments;
+    this.setState({ transaction });
+  }
+
+  showInputCategory = () => {
+    this.setState({ inputCategoryVisible: true });
+  }
+
+  inputCategoryChange = (e) => {
+    const category = e.target.value;
+    this.setState({ inputCategoryValue: category });
   }
   
   render() { 
@@ -75,8 +126,14 @@ class TransactionDrawer extends Component {
       this.setState({transaction})
     }
 
-    const { visible, onClose,  title, activeTab } = this.props ;
-    const { accounts, transaction } = this.state;
+    const { visible, onClose,  title, activeTab } = this.props;
+    const { 
+      accounts,
+      transaction, 
+      installmentsVisible, 
+      inputCategoryValue, 
+      inputCategoryVisible
+    } = this.state;
 
     return (
       <div>
@@ -97,9 +154,18 @@ class TransactionDrawer extends Component {
                     type={panel.key} 
                     transaction={transaction} 
                     accounts={accounts}
+                    installmentsVisible={installmentsVisible}
+                    inputCategoryValue={inputCategoryValue}
+                    inputCategoryVisible={inputCategoryVisible}
                     changeValue={this.changeValue}
                     changeDescription={this.changeDescription}
-                    changeDate={this.changeDate}/>
+                    changeDate={this.changeDate}
+                    changeTime={this.changeTime}
+                    changeAccount={this.changeAccount}
+                    changeInstallments={this.changeInstallments}
+                    showInputCategory={this.showInputCategory}
+                    inputCategoryChange={this.inputCategoryChange}
+                  />
                 </TabPane>
               )
             })}
