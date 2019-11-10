@@ -143,7 +143,6 @@ class TransactionDrawer extends Component {
 
   clearFields(){
     const transaction = this.props.transaction;
-    console.log(transaction)
     transaction.id = null
     transaction.description = null;
     transaction.date = null;
@@ -161,9 +160,7 @@ class TransactionDrawer extends Component {
   }
 
   saveTransactions() {
-
     const { transaction } = this.state;
-    console.log(transaction)
     const { 
       description,
       account,
