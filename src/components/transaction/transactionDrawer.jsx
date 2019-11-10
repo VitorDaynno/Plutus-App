@@ -3,7 +3,9 @@ import axios from 'axios';
 import {
   Drawer,
   Tabs,
+  message
 } from 'antd';
+import moment from 'moment';
 
 import Transaction from './transaction';
 import '../../assets/css/transactionDrawer.css';
@@ -25,6 +27,7 @@ class TransactionDrawer extends Component {
     super(props);
     this.state = {
       accounts: [],
+      categories: [],
       inputCategoryVisible: false,
       installmentsVisible: false
     };
@@ -118,11 +121,179 @@ class TransactionDrawer extends Component {
     const category = e.target.value;
     this.setState({ inputCategoryValue: category });
   }
-  
+
+  inputCategoryConfirm = () => {
+    const { state } = this;
+    const { transaction, inputCategoryValue } = state;
+    let categories = transaction.categories ? transaction.categories : [];
+    if (inputCategoryValue && categories.indexOf(inputCategoryValue) === -1) {
+      categories = [...categories, inputCategoryValue];
+    }
+    transaction.categories = categories
+    this.setState({
+      transaction,
+      inputCategoryVisible: false,
+      inputCategoryValue: '',
+    });
+  }
+
+  changeTab() {
+    this.clearFields();
+  }
+
+  clearFields(){
+    const transaction = this.props.transaction;
+    console.log(transaction)
+    transaction.id = null
+    transaction.description = null;
+    transaction.date = null;
+    transaction.time = null;
+    transaction.purchaseDate = null;
+    transaction.value = "";
+    transaction.account = null;
+    transaction.installments = null;
+    transaction.installmentsVisible = false;
+    transaction.categories = [];
+
+    this.setState({
+      transaction
+    });
+  }
+
+  saveTransactions() {
+
+    const { transaction } = this.state;
+    console.log(transaction)
+    const { 
+      description,
+      account,
+      installments,
+      categories,
+      type,
+       } = transaction;
+    
+    let {
+      id,
+      date,
+      time,
+      value,
+    } = transaction;
+
+    const isError = this.validate();
+
+    if(!isError){
+      const transaction = {};
+      
+      date = date ? date.format().split('T')[0] : date;
+      time = time ? time.format('LTS') : time;
+      value = type === "1" ? value * -1 : value;
+      transaction.description = description;
+      transaction.purchaseDate = `${date} ${time}`;
+      transaction.value = value;
+      transaction.account = account.id;
+      transaction.categories = categories;
+
+    if (installments) {
+      transaction.installments = installments;
+    }
+
+    if(!id){
+      this.createTransaction(transaction)
+    } else {
+      this.updateTransaction(id, transaction)
+    }
+  }
+  }
+
+  validate() {
+    const { transaction } = this.state;
+    let error = false;
+
+    if (!transaction.description) {
+      message.error('O campo Nome não pode ser vazio');
+      error = true;
+    }
+    if (!transaction.date) {
+      message.error('O campo Data não pode ser vazio');
+      error = true;
+    }
+    if (!transaction.time) {
+      message.error('O campo Horário não pode ser vazio');
+      error = true;
+    }
+    if (!transaction.value) {
+      message.error('O campo Valor não pode ser vazio');
+      error = true;
+    }
+    if (!transaction.account) {
+      message.error('O campo Conta não pode ser vazio');
+      error = true;
+    }
+
+    return error;
+  }
+
+  createTransaction(transaction) {
+    const token = localStorage.getItem('token');
+    const { history } = this.props;
+    axios.post('/v1/transactions', transaction, { headers: { Authorization: `Bearer ${token}` } })
+      .then(() => {
+        const { onClose } = this.props;
+        
+        message.success('Transação salva com sucesso!');
+        
+        onClose();
+        this.clearFields();
+      })
+      .catch((error) => {
+        if (error.message === 'Request failed with status code 422') {
+          message.error('Ocorreu um erro ao salvar!');
+        }
+        else if (error.message === 'Request failed with status code 403') {
+          message.error('Você foi desconectado!');
+          history.push('/');
+        }
+        else {
+          message.error(error.message);
+        }
+      });
+  }
+
+  updateTransaction(id, transaction) {
+    const token = localStorage.getItem('token');
+    const { history } = this.props;
+    axios.put(`/v1/transactions/${id}`, transaction, { headers: { Authorization: `Bearer ${token}` } })
+      .then(() => {
+        const { onClose } = this.props;
+        
+        message.success('Transação atualizada com sucesso!');
+        
+        onClose();
+        this.clearFields();
+      })
+      .catch((error) => {
+        if (error.message === 'Request failed with status code 422') {
+          message.error('Ocorreu um erro ao salvar!');
+        }
+        else if (error.message === 'Request failed with status code 403') {
+          message.error('Você foi desconectado!');
+          history.push('/');
+        }
+        else {
+          message.error(error.message);
+        }
+      });
+  }
+
   render() { 
 
     if(this.props.transaction !== this.state.transaction) {
       const transaction = this.props.transaction;
+      if(transaction.purchaseDate){
+        transaction.date =  moment(transaction.purchaseDate)
+        transaction.time =  moment(transaction.purchaseDate)
+      }
+      
       this.setState({transaction})
     }
 
@@ -145,7 +316,7 @@ class TransactionDrawer extends Component {
           onClose={onClose}
           visible={visible}
         >
-          <Tabs defaultActiveKey={activeTab}>
+          <Tabs defaultActiveKey={activeTab} onChange={() => this.changeTab()}>
             { panels.map((panel) => {
               return (
                 <TabPane tab={panel.title} key={panel.key}>
@@ -157,6 +328,7 @@ class TransactionDrawer extends Component {
                     installmentsVisible={installmentsVisible}
                     inputCategoryValue={inputCategoryValue}
                     inputCategoryVisible={inputCategoryVisible}
+                    inputCategoryConfirm={this.inputCategoryConfirm}
                     changeValue={this.changeValue}
                     changeDescription={this.changeDescription}
                     changeDate={this.changeDate}
@@ -165,6 +337,7 @@ class TransactionDrawer extends Component {
                     changeInstallments={this.changeInstallments}
                     showInputCategory={this.showInputCategory}
                     inputCategoryChange={this.inputCategoryChange}
+                    saveTransactions={() => this.saveTransactions()}
                   />
                 </TabPane>
               )

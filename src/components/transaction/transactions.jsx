@@ -95,7 +95,8 @@ class Transactions extends Component {
           onClose={this.onClose}
           visible={this.state.visible}
           transaction={this.state.transaction}
-          activeTab={this.state.activeTab}
+          activeTab={this.state.tab}
+          history={history}
         />
       </div>
     );

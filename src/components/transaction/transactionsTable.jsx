@@ -27,8 +27,8 @@ class TransactionsTable extends Component {
   editTransaction(transaction) {
     const { showDrawer } = this.props;   
     
-    const expense = 1;
-    const revenue = 2;
+    const expense = "1";
+    const revenue = "2";
     const tab = transaction.value < 0 ? expense : revenue;
 
     showDrawer("Editar Transação", transaction, tab);

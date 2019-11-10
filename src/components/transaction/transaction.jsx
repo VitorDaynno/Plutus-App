@@ -13,8 +13,8 @@ import {
   Button,
   message
 } from 'antd';
-import axios from 'axios';
 import locale from 'antd/es/date-picker/locale/pt_BR';
+
 
 
 const { Option } = Select;
@@ -25,7 +25,7 @@ class Transaction extends Component {
     super(props);
     this.state = {
       accounts: [],
-      categories: [],
+      
       type: props.type
     };
   }
@@ -36,122 +36,7 @@ class Transaction extends Component {
     this.setState({ categories });
   }
 
-  inputCategoryConfirm = () => {
-    const { state } = this;
-    const { inputCategoryValue } = state;
-    let { categories } = state;
-    if (inputCategoryValue && categories.indexOf(inputCategoryValue) === -1) {
-      categories = [...categories, inputCategoryValue];
-    }
-    this.setState({
-      categories,
-      inputCategoryVisible: false,
-      inputCategoryValue: '',
-    });
-  }
 
-  saveTransactions = () => {
-    const { 
-      name,
-      account,
-      installments,
-      categories,
-      type,
-       } = this.state;
-    
-    let {
-      date,
-      time,
-      value,
-    } = this.state;
-
-    const isError = this.validate();
-
-    if(!isError){
-      const transaction = {};
-      
-      date = date ? date.format().split('T')[0] : date;
-      time = time ? time.format('LTS') : time;
-      value = type === "1" ? value * -1 : value;
-      transaction.description = name;
-      transaction.purchaseDate = `${date} ${time}`;
-      transaction.value = value;
-      transaction.account = account;
-      transaction.categories = categories;
-
-    if (installments) {
-      transaction.installments = installments;
-    }
-
-    const token = localStorage.getItem('token');
-    const { history } = this.props;
-    axios.post('/v1/transactions', transaction, { headers: { Authorization: `Bearer ${token}` } })
-      .then(() => {
-        const { onClose, clearFields } = this.props;
-        
-        message.success('Transação salva com sucesso!');
-        
-        onClose();
-        clearFields(this);
-      })
-      .catch((error) => {
-        message.error(error);
-        if (error.response && error.response.status && error.response.status === 403) {
-          history.push('/');
-        }
-      });
-    }
-  }
-  
-  validate() {
-    const { state } = this;
-    let error = false;
-
-    if (!state.name) {
-      message.error('O campo Nome não pode ser vazio');
-      error = true;
-    }
-    if (!state.date) {
-      message.error('O campo Data não pode ser vazio');
-      error = true;
-    }
-    if (!state.time) {
-      message.error('O campo Horário não pode ser vazio');
-      error = true;
-    }
-    if (!state.value) {
-      message.error('O campo Valor não pode ser vazio');
-      error = true;
-    }
-    if (!state.account) {
-      message.error('O campo Conta não pode ser vazio');
-      error = true;
-    }
-
-    return error;
-  }
-
-  clearFields(){
-    const name = null;
-    const date = null;
-    const time = null;
-    const value = null;
-    const account = null;
-    const installments = null;
-    const installmentsVisible = false;
-    const categories = [];
-
-    this.setState({
-      name,
-      date,
-      time,
-      value,
-      account,
-      installments,
-      installmentsVisible,
-      categories
-    });
-  }
 
   render() {
     const { 
@@ -167,7 +52,9 @@ class Transaction extends Component {
       changeAccount,
       changeInstallments,
       showInputCategory,
-      inputCategoryChange
+      inputCategoryChange,
+      inputCategoryConfirm,
+      saveTransactions
     } = this.props;
 
     const {
@@ -177,9 +64,10 @@ class Transaction extends Component {
       value,
       account,
       installments,
-      categories
+      categories,
     } = transaction ? transaction : {};
-    
+
+
     return (
       <div>
         <Row className="new-transaction-row">
@@ -228,7 +116,7 @@ class Transaction extends Component {
             {categories && categories.map((category) => {
               const isLongTag = category.length > 20;
               const tagElem = (
-                <Tag key={category} closable="true" afterClose={() => this.removeCategory(category)}>
+                <Tag key={category} closable="true" onClose={() => this.removeCategory(category)}>
                   {isLongTag ? `${category.slice(0, 20)}...` : category}
                 </Tag>
               );
@@ -244,8 +132,8 @@ class Transaction extends Component {
                 style={{ width: 78 }}
                 value={inputCategoryValue}
                 onChange={inputCategoryChange}
-                onBlur={this.inputCategoryConfirm}
-                onPressEnter={this.inputCategoryConfirm}
+                onBlur={inputCategoryConfirm}
+                onPressEnter={inputCategoryConfirm}
               />
             )}
             {!inputCategoryVisible && (
@@ -261,7 +149,7 @@ class Transaction extends Component {
         </Row>
         <Row>
           <Col className="new">
-            <Button onClick={this.saveTransactions}>
+            <Button onClick={saveTransactions}>
             Salvar
             </Button>
           </Col>
