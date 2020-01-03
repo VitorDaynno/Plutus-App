@@ -23,6 +23,16 @@ class TransactionsTable extends Component {
         }
       });
   }
+
+  editTransaction(transaction) {
+    const { showDrawer } = this.props;   
+    
+    const expense = "1";
+    const revenue = "2";
+    const tab = transaction.value < 0 ? expense : revenue;
+
+    showDrawer("Editar Transação", transaction, tab);
+  }
   
   render() {
     const { data, getTransactions } = this.props ? this.props : {};
@@ -88,11 +98,16 @@ class TransactionsTable extends Component {
             title="Ação"
             dataIndex="id"
             key="action"
-            render={id =>
+            render={(id, item) =>
               (
+              <div>
               <Popconfirm title="Deseja realmente deletar?" onConfirm={() => this.removeTransactions(id, getTransactions)}>
                 <Icon type="delete" />
               </Popconfirm>
+              <Popconfirm title="Deseja realmente editar?" onConfirm={() => this.editTransaction(item)}>
+                <Icon type="edit" />
+              </Popconfirm>
+              </div>
               )
             }
           />
