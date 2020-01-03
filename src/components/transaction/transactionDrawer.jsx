@@ -29,7 +29,8 @@ class TransactionDrawer extends Component {
       accounts: [],
       categories: [],
       inputCategoryVisible: false,
-      installmentsVisible: false
+      installmentsVisible: false,
+      type: "1"
     };
   }
 
@@ -138,6 +139,9 @@ class TransactionDrawer extends Component {
   }
 
   changeTab() {
+    let { type } = this.state;
+    type = type === "1" ? "2" : "1";
+    this.setState({type}); 
     this.clearFields();
   }
 
@@ -160,13 +164,12 @@ class TransactionDrawer extends Component {
   }
 
   saveTransactions() {
-    const { transaction } = this.state;
+    const { transaction, type } = this.state;
     const { 
       description,
       account,
       installments,
       categories,
-      type,
        } = transaction;
     
     let {
@@ -177,7 +180,6 @@ class TransactionDrawer extends Component {
     } = transaction;
 
     const isError = this.validate();
-
     if(!isError){
       const transaction = {};
       

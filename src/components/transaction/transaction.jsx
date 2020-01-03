@@ -11,7 +11,6 @@ import {
   Icon,
   Select,
   Button,
-  message
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/pt_BR';
 
@@ -25,7 +24,6 @@ class Transaction extends Component {
     super(props);
     this.state = {
       accounts: [],
-      
       type: props.type
     };
   }
@@ -35,8 +33,6 @@ class Transaction extends Component {
     categories = categories.filter(category => category !== removedCategory);
     this.setState({ categories });
   }
-
-
 
   render() {
     const { 
